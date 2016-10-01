@@ -4,107 +4,122 @@
  * are made available under the terms of the GNU Lesser Public License v3
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/lgpl.html
- * 
+ * <p>
  * Contributors:
- *     A. L. O. Paraense, E. Froes, R. R. Gudwin
+ * A. L. O. Paraense, E. Froes, R. R. Gudwin
  ******************************************************************************/
 
 package br.unicamp.jtraci;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.List;
 
 /**
  * @author andre.paraense
  *
  */
 public class SumoProxy {
-	
-	private Socket socket;
-	
-	private DataInputStream dis;
-	
-	private DataOutputStream dos;
-	
-	/** The current simulation step, in ms. */
-	private int currentSimStep = 0;
-	
-	public SumoProxy(){
-		
-		socket = new Socket();
-		
-	}
-	
-	public boolean connect(InetAddress addr, int port){
-		
-		boolean successfulConnection = false;
-		
-		try {
-			
-			socket.connect(new InetSocketAddress(addr, port));			
-			successfulConnection =  true;
-			
-			dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-			dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-			
-		} catch (ConnectException ce) {
-			
-			successfulConnection =  false;
-		} catch (IOException e) {
-			
-			successfulConnection =  false;
-		}
-		
-		return successfulConnection;
-		
-	}
-	
-	
-	/**
-	 * TODO - This main is only for fast testing purposes. Should be deleted later.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-		if(args.length!=2)
-		{
-			System.out.println("Usage: SumoProxy <P1> <P2>");
-			System.out.println("<P1> = Server IP");
-			System.out.println("<P2> = Server port");
-			return;
-		}
-		
-		String ipServidor = args[0];
-		int port = Integer.valueOf(args[1]);
 
-		
-		SumoProxy sumoProxy = new SumoProxy();
-		
-		try {
-			
-			sumoProxy.connect(InetAddress.getByName(ipServidor), port);
-			
-		} catch (UnknownHostException e) {
+    private Socket socket;
 
-			e.printStackTrace();
-		}
-		
-		while(true){
-			
-			
-			
-		}
+    private DataInputStream dis;
 
-	}
-	
-	
+    private DataOutputStream dos;
+
+    /** The current simulation step, in ms. */
+    private int currentSimStep = 0;
+
+    public SumoProxy() {
+
+        socket = new Socket();
+
+    }
+
+    public boolean connect(InetAddress addr, int port) throws Exception {
+
+        boolean successfulConnection = false;
+
+        while (!successfulConnection) {
+            try {
+
+                socket = new Socket(addr, port);
+                successfulConnection = true;
+
+                dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+
+
+            } catch (ConnectException ce) {
+                successfulConnection = false;
+            } catch (IOException e) {
+                successfulConnection = false;
+            }
+        }
+
+        return successfulConnection;
+
+    }
+
+    public boolean isConnected() {
+        return socket.isConnected();
+    }
+
+    public void sendCommand(Command command) {
+        try {
+
+            int totalLen = Integer.SIZE / 8;
+            totalLen += command.getMessageSize();
+
+            dos.writeInt(totalLen);
+
+            ((OutputStream) dos).write(command.getCommand());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendCommandList(List<Command> commands) {
+
+        int totalLen = Integer.SIZE / 8;
+
+        for (int i = 0; i < commands.size(); i++)
+            totalLen += commands.get(i).getMessageSize();
+
+        try {
+            dos.writeInt(totalLen);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        commands.forEach(c -> {
+            try {
+                byte[] message = c.getCommand();
+                ((OutputStream) dos).write(message);
+                dos.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        /*try {
+            int totalLen2 = dis.readInt() - Integer.SIZE/8;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        byte[] buffer = new byte[totalLen];
+        try {
+            dis.readFully(buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+
 }
