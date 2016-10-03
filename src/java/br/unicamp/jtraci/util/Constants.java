@@ -1,4 +1,4 @@
-package br.unicamp.jtraci;
+package br.unicamp.jtraci.util;
 
 public class Constants {
 

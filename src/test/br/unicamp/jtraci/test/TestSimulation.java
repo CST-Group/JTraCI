@@ -1,6 +1,6 @@
-package br.unicamp.jtraci.simulation;
+package br.unicamp.jtraci.test;
 
-import br.unicamp.jtraci.SumoSimulation;
+import br.unicamp.jtraci.simulation.SumoSimulation;
 
 /**
  * Created by Du on 27/09/16.

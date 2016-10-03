@@ -1,4 +1,8 @@
-package br.unicamp.jtraci;
+package br.unicamp.jtraci.simulation;
+
+import br.unicamp.jtraci.util.Constants;
+import br.unicamp.jtraci.communication.Command;
+import br.unicamp.jtraci.communication.SumoProxy;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -9,17 +9,17 @@
  * A. L. O. Paraense, E. Froes, R. R. Gudwin
  ******************************************************************************/
 
-package br.unicamp.jtraci;
+package br.unicamp.jtraci.communication;
 
 import java.io.*;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author andre.paraense
- *
  */
 public class SumoProxy {
 
@@ -29,7 +29,9 @@ public class SumoProxy {
 
     private DataOutputStream dos;
 
-    /** The current simulation step, in ms. */
+    /**
+     * The current simulation step, in ms.
+     */
     private int currentSimStep = 0;
 
     public SumoProxy() {
@@ -67,7 +69,10 @@ public class SumoProxy {
         return socket.isConnected();
     }
 
-    public void sendCommand(Command command) {
+    public CommandResult sendCommand(Command command) {
+
+        int totalLenResult = 0;
+        byte[] buffer = null;
         try {
 
             int totalLen = Integer.SIZE / 8;
@@ -75,21 +80,32 @@ public class SumoProxy {
 
             dos.writeInt(totalLen);
 
-            ((OutputStream) dos).write(command.getCommand());
+            byte[] message = command.getCommand();
+            ((OutputStream) dos).write(message);
+
+            dos.flush();
+
+            totalLenResult = dis.readInt() - Integer.SIZE / 8;
+
+            buffer = new byte[totalLenResult];
+            dis.readFully(buffer);
 
         } catch (IOException e) {
             e.printStackTrace();
+
         }
+
+        return (new CommandResult(command, buffer));
     }
 
-    public void sendCommandList(List<Command> commands) {
+    public List<CommandResult> sendCommandList(List<Command> commands) {
 
         int totalLen = Integer.SIZE / 8;
 
-        for (int i = 0; i < commands.size(); i++)
-            totalLen += commands.get(i).getMessageSize();
-
         try {
+            for (int i = 0; i < commands.size(); i++)
+                totalLen += commands.get(i).getMessageSize();
+
             dos.writeInt(totalLen);
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,19 +122,31 @@ public class SumoProxy {
             }
         });
 
+        return readResultCommand(commands);
 
-        /*try {
-            int totalLen2 = dis.readInt() - Integer.SIZE/8;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    }
 
-        byte[] buffer = new byte[totalLen];
-        try {
-            dis.readFully(buffer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
+    public List<CommandResult> readResultCommand(List<Command> executedCommands) {
+        List<CommandResult> commandResults = new ArrayList<>();
+
+        executedCommands.forEach(command -> {
+
+            int totalLenResult = 0;
+
+            try {
+                totalLenResult = dis.readInt() - Integer.SIZE / 8;
+
+                byte[] buffer = new byte[totalLenResult];
+                dis.readFully(buffer);
+
+                commandResults.add(new CommandResult(command, buffer));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return commandResults;
     }
 
 

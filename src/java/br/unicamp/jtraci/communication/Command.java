@@ -1,4 +1,4 @@
-package br.unicamp.jtraci;
+package br.unicamp.jtraci.communication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -106,10 +106,6 @@ public class Command {
         return convertList;
     }
 
-    /**
-     * Write a string to the list by encoding the characters in UTF-8
-     * @param value the String to be written
-     */
     public List<Byte> convertStringUTF8Val(String value) throws IllegalArgumentException
     {
         return convertStringVal(value,"UTF-8");
