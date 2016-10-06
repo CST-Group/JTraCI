@@ -18,10 +18,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author andre.paraense
- */
-public class SumoProxy {
+
+public class SumoConnection {
 
     private Socket socket;
 
@@ -34,7 +32,7 @@ public class SumoProxy {
      */
     private int currentSimStep = 0;
 
-    public SumoProxy() {
+    public SumoConnection() {
 
         socket = new Socket();
 
@@ -71,6 +69,8 @@ public class SumoProxy {
 
     public CommandResult sendCommand(Command command) {
 
+        CommandResult commandResult = null;
+
         int totalLenResult = 0;
         byte[] buffer = null;
         try {
@@ -85,17 +85,14 @@ public class SumoProxy {
 
             dos.flush();
 
-            totalLenResult = dis.readInt() - Integer.SIZE / 8;
-
-            buffer = new byte[totalLenResult];
-            dis.readFully(buffer);
+            commandResult = readResultCommand(command);
 
         } catch (IOException e) {
             e.printStackTrace();
 
         }
 
-        return (new CommandResult(command, buffer));
+        return commandResult;
     }
 
     public List<CommandResult> sendCommandList(List<Command> commands) {
@@ -122,28 +119,37 @@ public class SumoProxy {
             }
         });
 
-        return readResultCommand(commands);
+
+        return readResultCommandList(commands);
 
     }
 
 
-    public List<CommandResult> readResultCommand(List<Command> executedCommands) {
+    public CommandResult readResultCommand(Command command) {
+
+        CommandResult commandResult = null;
+
+        try {
+            int totalLenResult = dis.readInt() - Integer.SIZE / 8;
+
+            byte[] buffer = new byte[totalLenResult];
+            dis.readFully(buffer);
+
+            commandResult = new CommandResult(command, buffer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return commandResult;
+    }
+
+
+    public List<CommandResult> readResultCommandList(List<Command> executedCommands) {
         List<CommandResult> commandResults = new ArrayList<>();
 
         executedCommands.forEach(command -> {
-
-            int totalLenResult = 0;
-
-            try {
-                totalLenResult = dis.readInt() - Integer.SIZE / 8;
-
-                byte[] buffer = new byte[totalLenResult];
-                dis.readFully(buffer);
-
-                commandResults.add(new CommandResult(command, buffer));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            commandResults.add(readResultCommand(command));
         });
 
         return commandResults;

@@ -15,12 +15,51 @@ public class Command {
 
     private List<Byte> content;
 
-    private int id;
+    private int cmdID;
 
-    private byte varID;
+    private int varID;
+
+    private String objectID;
 
     public Command() {
         content = new ArrayList<Byte>();
+        this.cmdID = -1;
+        this.varID = -1;
+        this.objectID = "";
+    }
+
+    public Command(int cmdID) {
+        content = new ArrayList<Byte>();
+        this.cmdID = cmdID;
+        this.varID = -1;
+        this.objectID = null;
+    }
+
+    public Command(int cmdID, int varID) {
+        content = new ArrayList<Byte>();
+        this.cmdID = cmdID;
+        this.varID = varID;
+        this.objectID = "";
+
+        this.addHeaderParameters();
+    }
+
+    public Command(int cmdID, int varID, String objectID) {
+        content = new ArrayList<Byte>();
+        this.cmdID = cmdID;
+        this.varID = varID;
+        this.objectID = objectID;
+
+        this.addHeaderParameters();
+    }
+
+    private void addHeaderParameters() {
+
+        if(getVarID() != -1)
+            (this.convertUnsignedByteVal(getVarID())).forEach(x -> getContent().add(x));
+
+        if(getObjectID() != null)
+            this.convertStringUTF8Val(getObjectID()).forEach(x -> getContent().add(x));
     }
 
 
@@ -31,31 +70,29 @@ public class Command {
         List<Byte> lst0 = this.convertByteVal(0);
         lst0.forEach(a -> commandList.add(a));
 
-        List<Byte> lstHead  = this.convertIntVal(HEADER_SIZE + getContent().size());
+        List<Byte> lstHead = this.convertIntVal(HEADER_SIZE + getContent().size());
         lstHead.forEach(b -> commandList.add(b));
 
-        List<Byte> lstId = this.convertUnsignedByteVal(getId());
-        lstId.forEach(c -> commandList.add(c));
+        List<Byte> lstCmdId = this.convertUnsignedByteVal(getCmdID());
+        lstCmdId.forEach(c -> commandList.add(c));
 
         byte[] message = new byte[commandList.size() + getContent().size()];
 
         getContent().forEach(i -> commandList.add(i));
 
-        for(int i=0; i<commandList.size(); i++)
+        for (int i = 0; i < commandList.size(); i++)
             message[i] = commandList.get(i);
 
         return message;
     }
 
 
-
-
     public static List<Byte> convertByteVal(int value) throws IllegalArgumentException {
 
         List<Byte> convertList = new ArrayList<Byte>();
 
-        if(value >= -128 && value <= 127) {
-            convertList.add(new Byte((byte)value));
+        if (value >= -128 && value <= 127) {
+            convertList.add(new Byte((byte) value));
 
             return convertList;
 
@@ -64,8 +101,7 @@ public class Command {
         }
     }
 
-    public static List<Byte> convertIntVal(int value) throws IllegalArgumentException
-    {
+    public static List<Byte> convertIntVal(int value) throws IllegalArgumentException {
         List<Byte> convertList = new ArrayList<Byte>();
 
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream(4);
@@ -81,15 +117,14 @@ public class Command {
         }
         bytes = byteOut.toByteArray();
 
-        for(int i=0; i<bytes.length; i++)
+        for (int i = 0; i < bytes.length; i++)
             convertList.add(bytes[i]);
 
         return convertList;
 
     }
 
-    public static List<Byte> convertUnsignedByteVal(int value) throws IllegalArgumentException
-    {
+    public static List<Byte> convertUnsignedByteVal(int value) throws IllegalArgumentException {
         if (value < 0 || value > 255)
             throw new IllegalArgumentException("Error writing unsigned byte: byte value may only range from 0 to 255.");
 
@@ -100,19 +135,17 @@ public class Command {
         // 128 -> -128
         // 255 -> -1
 
-        if (value > 127) convertList.add(new Byte( (byte)(value-256) ));
-        else convertList.add(new Byte( (byte)(value) ));
+        if (value > 127) convertList.add(new Byte((byte) (value - 256)));
+        else convertList.add(new Byte((byte) (value)));
 
         return convertList;
     }
 
-    public List<Byte> convertStringUTF8Val(String value) throws IllegalArgumentException
-    {
-        return convertStringVal(value,"UTF-8");
+    public List<Byte> convertStringUTF8Val(String value) throws IllegalArgumentException {
+        return convertStringVal(value, "UTF-8");
     }
 
-    private List<Byte> convertStringVal(String value, String charset) throws IllegalArgumentException
-    {
+    private List<Byte> convertStringVal(String value, String charset) throws IllegalArgumentException {
         byte bytes[];
 
         try {
@@ -126,7 +159,7 @@ public class Command {
 
         convertIntVal(value.length()).forEach(c -> convertList.add(c));
 
-        for (int i=0; i<bytes.length; i++)
+        for (int i = 0; i < bytes.length; i++)
             convertByteVal(bytes[i]).forEach(c -> convertList.add(c));
 
         return convertList;
@@ -135,20 +168,19 @@ public class Command {
 
     public void addContent(Object content) {
 
-        if(content instanceof Integer){
+        if (content instanceof Integer) {
             this.convertIntVal((Integer) content).forEach(c -> getContent().add(c));
-        }
-        else if(content instanceof Byte) {
+        } else if (content instanceof Byte) {
             getContent().add((Byte) content);
-        } else if(content instanceof String){
+        } else if (content instanceof String) {
             this.convertStringUTF8Val((String) content).forEach(c -> getContent().add(c));
         }
 
     }
 
 
-    public void addVarID(byte varID){
-        this.varID = varID;
+    public void addVarID(byte varID) {
+        this.setVarID(varID);
         getContent().add(varID);
     }
 
@@ -161,12 +193,12 @@ public class Command {
         this.content = content;
     }
 
-    public int getId() {
-        return id;
+    public int getCmdID() {
+        return cmdID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCmdID(int cmdID) {
+        this.cmdID = cmdID;
     }
 
     public int getMessageSize() {
@@ -179,4 +211,15 @@ public class Command {
     }
 
 
+    public void setVarID(int varID) {
+        this.varID = varID;
+    }
+
+    public String getObjectID() {
+        return objectID;
+    }
+
+    public void setObjectID(String objectID) {
+        this.objectID = objectID;
+    }
 }

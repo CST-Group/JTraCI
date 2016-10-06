@@ -2,28 +2,34 @@ package br.unicamp.jtraci.simulation;
 
 import br.unicamp.jtraci.util.Constants;
 import br.unicamp.jtraci.communication.Command;
-import br.unicamp.jtraci.communication.SumoProxy;
+import br.unicamp.jtraci.communication.SumoConnection;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class SumoSimulation {
 
-    private SumoProxy connection;
+    private SumoConnection connection;
     private int currentStep;
     private Process sumoProcess;
+    private static SumoSimulation sumoSimulation = null;
 
-    public SumoSimulation(){
-        setConnection(new SumoProxy());
+
+    public static SumoSimulation getInstance(){
+
+        if(sumoSimulation ==  null)
+            sumoSimulation = new SumoSimulation();
+
+        return sumoSimulation;
     }
 
-    public SumoSimulation(SumoProxy connection){
-        this.setConnection(connection);
-        this.setCurrentStep(0);
-    }
+    private SumoSimulation(){
 
+        setConnection(new SumoConnection());
+    }
 
     public void connect(InetAddress address, int port) throws Exception {
 
@@ -68,11 +74,11 @@ public class SumoSimulation {
         return successfulRun;
     }
 
-    public SumoProxy getConnection() {
+    public SumoConnection getConnection() {
         return connection;
     }
 
-    public void setConnection(SumoProxy connection) {
+    public void setConnection(SumoConnection connection) {
         this.connection = connection;
     }
 
@@ -88,31 +94,10 @@ public class SumoSimulation {
         List<Command> commands = new ArrayList<>();
 
 
-        Command command0 = new Command();
-        command0.setId(Constants.CMD_SIMSTEP2);
+        Command command0 = new Command(Constants.CMD_SIMSTEP2);
         command0.addContent(((++currentStep) * 1000));
         commands.add(command0);
 
-        /*Command command1 = new Command();
-        command1.setId(Constants.CMD_GET_VEHICLE_VARIABLE);
-        command1.addContent((byte)Constants.ID_LIST);
-        command1.addContent("");
-        commands.add(command1);*/
-
-        //getConnection().sendReadCommand(command);
-
-        /*Command command2 = new Command();
-        command2.setId(Constants.CMD_GET_SIM_VARIABLE); // Command
-        command2.addContent((byte)Constants.VAR_TELEPORT_STARTING_VEHICLES_IDS);
-        command2.addContent("");
-        commands.add(command2);
-
-
-        Command command3 = new Command();
-        command3.setId(Constants.CMD_GET_SIM_VARIABLE);
-        command3.addContent((byte)Constants.VAR_TELEPORT_ENDING_VEHICLES_IDS);
-        command3.addContent("");
-        commands.add(command3);*/
 
         getConnection().sendCommandList(commands);
 

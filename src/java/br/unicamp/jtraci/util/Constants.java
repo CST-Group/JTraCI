@@ -18,6 +18,9 @@ public class Constants {
     /** command: get simulation variable */
     public static final int CMD_GET_SIM_VARIABLE = 0xab;
 
+    /** command: set vehicle variable */
+    public static final int CMD_SET_VEHICLE_VARIABLE = 0xc4;
+
     /** ids of vehicles starting to teleport (get: simulation) */
     public static final int VAR_TELEPORT_STARTING_VEHICLES_IDS = 0x76;
 

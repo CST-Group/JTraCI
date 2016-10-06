@@ -27,7 +27,7 @@ public class TestSimulation {
 
         int port = 8081;
 
-        SumoSimulation sumoSimulation = new SumoSimulation();
+        SumoSimulation sumoSimulation = SumoSimulation.getInstance();
 
         sumoSimulation.runSumoGui("/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg", port);
 
