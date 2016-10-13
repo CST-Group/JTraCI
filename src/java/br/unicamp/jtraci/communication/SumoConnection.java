@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/lgpl.html
  * <p>
  * Contributors:
- * A. L. O. Paraense, E. Froes, R. R. Gudwin
+ * A. L. O. Paraense, E. M. Froes, R. R. Gudwin
  ******************************************************************************/
 
 package br.unicamp.jtraci.communication;
@@ -108,17 +108,16 @@ public class SumoConnection {
             e.printStackTrace();
         }
 
-        commands.forEach(c -> {
+        for (Command command: commands) {
             try {
-                byte[] message = c.getCommand();
+                byte[] message = command.getCommand();
                 ((OutputStream) dos).write(message);
                 dos.flush();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
-
+        }
 
         return readResultCommandList(commands);
 
@@ -146,11 +145,11 @@ public class SumoConnection {
 
 
     public List<CommandResult> readResultCommandList(List<Command> executedCommands) {
-        List<CommandResult> commandResults = new ArrayList<>();
+        List<CommandResult> commandResults = new ArrayList<CommandResult>();
 
-        executedCommands.forEach(command -> {
-            commandResults.add(readResultCommand(command));
-        });
+        for (int i = 0; i < executedCommands.size() ; i++) {
+            commandResults.add(readResultCommand(executedCommands.get(i)));
+        }
 
         return commandResults;
     }

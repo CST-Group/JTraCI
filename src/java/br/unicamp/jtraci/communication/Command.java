@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2016  DCA-FEEC-UNICAMP
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser Public License v3
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl.html
+ * <p>
+ * Contributors:
+ * A. L. O. Paraense, E. M. Froes, R. R. Gudwin
+ ******************************************************************************/
+
 package br.unicamp.jtraci.communication;
 
 import java.io.ByteArrayOutputStream;
@@ -56,29 +67,40 @@ public class Command {
     private void addHeaderParameters() {
 
         if(getVarID() != -1)
-            (this.convertUnsignedByteVal(getVarID())).forEach(x -> getContent().add(x));
+        {
+            List<Byte> varIDBytes =  this.convertUnsignedByteVal(getVarID());
+            for(int i=0; i<varIDBytes.size(); i++)
+            {
+                getContent().add(varIDBytes.get(i));
+            }
+        }
 
-        if(getObjectID() != null)
-            this.convertStringUTF8Val(getObjectID()).forEach(x -> getContent().add(x));
+        if(getObjectID() != null){
+            List<Byte> varIDBytes =  this.convertUnsignedByteVal(getVarID());
+            for(int i=0; i<varIDBytes.size(); i++)
+            {
+                getContent().add(varIDBytes.get(i));
+            }
+        }
     }
 
 
     public byte[] getCommand() {
 
-        List<Byte> commandList = new ArrayList<>();
+        List<Byte> commandList = new ArrayList<Byte>();
 
         List<Byte> lst0 = this.convertByteVal(0);
-        lst0.forEach(a -> commandList.add(a));
+        commandList.addAll(lst0);
 
         List<Byte> lstHead = this.convertIntVal(HEADER_SIZE + getContent().size());
-        lstHead.forEach(b -> commandList.add(b));
+        commandList.addAll(lstHead);
 
         List<Byte> lstCmdId = this.convertUnsignedByteVal(getCmdID());
-        lstCmdId.forEach(c -> commandList.add(c));
+        commandList.addAll(lstCmdId);
 
         byte[] message = new byte[commandList.size() + getContent().size()];
 
-        getContent().forEach(i -> commandList.add(i));
+        commandList.addAll(getContent());
 
         for (int i = 0; i < commandList.size(); i++)
             message[i] = commandList.get(i);
@@ -157,10 +179,19 @@ public class Command {
 
         List<Byte> convertList = new ArrayList<Byte>();
 
-        convertIntVal(value.length()).forEach(c -> convertList.add(c));
+        List<Byte> valueLengthBytes = convertIntVal(value.length());
 
-        for (int i = 0; i < bytes.length; i++)
-            convertByteVal(bytes[i]).forEach(c -> convertList.add(c));
+        convertList.addAll(valueLengthBytes);
+
+        for (int i = 0; i < bytes.length; i++) {
+
+            List<Byte> byteLst = convertByteVal(bytes[i]);
+
+            for (int j = 0; j <byteLst.size(); j++) {
+                convertList.add(byteLst.get(j));
+            }
+        }
+
 
         return convertList;
     }
@@ -169,11 +200,11 @@ public class Command {
     public void addContent(Object content) {
 
         if (content instanceof Integer) {
-            this.convertIntVal((Integer) content).forEach(c -> getContent().add(c));
+            getContent().addAll( this.convertIntVal((Integer) content));
         } else if (content instanceof Byte) {
             getContent().add((Byte) content);
         } else if (content instanceof String) {
-            this.convertStringUTF8Val((String) content).forEach(c -> getContent().add(c));
+            getContent().addAll(this.convertStringUTF8Val((String) content));
         }
 
     }

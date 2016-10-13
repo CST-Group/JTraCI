@@ -1,10 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2016  DCA-FEEC-UNICAMP
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser Public License v3
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl.html
+ * <p>
+ * Contributors:
+ * A. L. O. Paraense, E. M. Froes, R. R. Gudwin
+ ******************************************************************************/
+
 package br.unicamp.jtraci.test;
 
 import br.unicamp.jtraci.simulation.SumoSimulation;
 
-/**
- * Created by Du on 27/09/16.
- */
 public class TestSimulation {
     /**
      * TODO - This main is only for fast testing purposes. Should be deleted later.
@@ -29,7 +37,7 @@ public class TestSimulation {
 
         SumoSimulation sumoSimulation = SumoSimulation.getInstance();
 
-        sumoSimulation.runSumoGui("/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg", port);
+        sumoSimulation.runSumoGui("/home/efroes/Items/MAPS/twinT/twinT.sumocfg", port);
 
         while(true){
 
