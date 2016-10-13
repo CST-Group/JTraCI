@@ -25,10 +25,12 @@ public class GetAllVehicleTest {
     private int port = 4011;
     private SumoSimulation sumoSimulation;
 
+    private String pathMap = "/home/efroes/Items/MAPS/twinT/twinT.sumocfg";
+
     @Before
     public void setUp(){
         sumoSimulation = SumoSimulation.getInstance();
-        sumoSimulation.runSumoGui("/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg", port);
+        sumoSimulation.runSumoGui(pathMap, port);
     }
 
     @Test

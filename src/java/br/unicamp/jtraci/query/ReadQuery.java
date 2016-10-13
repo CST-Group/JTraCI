@@ -48,7 +48,7 @@ public class ReadQuery<E extends Entity> {
         int varID = Constants.ID_LIST;
         String objectID = "";
 
-        Command command = new Command(commandByte,varID,objectID);
+        Command command = new Command(commandByte, varID, objectID);
         CommandResult commandResult = getSumoConnection().sendCommand(command);
 
         return new ArrayList<E>();

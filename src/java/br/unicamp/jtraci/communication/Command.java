@@ -76,7 +76,7 @@ public class Command {
         }
 
         if(getObjectID() != null){
-            List<Byte> varIDBytes =  this.convertUnsignedByteVal(getVarID());
+            List<Byte> varIDBytes =  this.convertStringUTF8Val(getObjectID());
             for(int i=0; i<varIDBytes.size(); i++)
             {
                 getContent().add(varIDBytes.get(i));
