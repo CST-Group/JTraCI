@@ -24,16 +24,12 @@ public class Command {
             + Integer.SIZE / 8  // integer length
             + Byte.SIZE / 8;
 
+    private String id;
     private List<Byte> content;
-
     private int cmdID;
-
     private int varID;
-
     private String objectID;
-
     private int commandLength;
-
     private byte[] command;
 
     public Command() {
@@ -41,6 +37,8 @@ public class Command {
         this.cmdID = -1;
         this.varID = -1;
         this.objectID = "";
+        this.setId(Command.class.getSimpleName() + "_" + System.currentTimeMillis());
+
     }
 
     public Command(int cmdID) {
@@ -48,6 +46,7 @@ public class Command {
         this.cmdID = cmdID;
         this.varID = -1;
         this.objectID = null;
+        this.setId(Command.class.getSimpleName() + "_" + System.currentTimeMillis());
     }
 
     public Command(int cmdID, int varID) {
@@ -55,6 +54,7 @@ public class Command {
         this.cmdID = cmdID;
         this.varID = varID;
         this.objectID = "";
+        this.setId(Command.class.getSimpleName() + "_" + System.currentTimeMillis());
 
         this.addHeaderParameters();
     }
@@ -64,6 +64,7 @@ public class Command {
         this.cmdID = cmdID;
         this.varID = varID;
         this.objectID = objectID;
+        this.setId(Command.class.getSimpleName() + "_" + System.currentTimeMillis());
 
         this.addHeaderParameters();
     }
@@ -268,5 +269,13 @@ public class Command {
 
     public void setCommandLength(int commandLength) {
         this.commandLength = commandLength;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

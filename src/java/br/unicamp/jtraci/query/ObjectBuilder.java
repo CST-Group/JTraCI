@@ -15,6 +15,7 @@ import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.CommandResult;
 import br.unicamp.jtraci.entities.Entity;
 
+import java.nio.ByteBuffer;
 import java.util.*;
 
 
@@ -36,12 +37,14 @@ public class ObjectBuilder {
                 List<Entity> entities = new ArrayList<Entity>();
 
                 while(window < commandResult.getResult().length) {
+                    int headLen = 4;
 
-                    int infoLen = Integer. (Arrays.copyOfRange(commandResult.getResult(), window, window + 4));
+                    ByteBuffer wrapped = ByteBuffer.wrap(Arrays.copyOfRange(commandResult.getResult(), window, window + headLen)); // big-endian by default
+                    int infoLen = wrapped.getInt();
 
-                    byte[] id = Arrays.copyOfRange(commandResult.getResult(), window, window + 5);
+                    byte[] id = Arrays.copyOfRange(commandResult.getResult(), window + headLen, window + headLen + infoLen);
 
-                    window += 5;
+                    window += headLen+infoLen;
 
                     try {
                         Entity entity = (Entity) entityType.newInstance();
@@ -54,8 +57,6 @@ public class ObjectBuilder {
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
-
-
                 }
                 return entities;
             }
@@ -67,6 +68,5 @@ public class ObjectBuilder {
             ex.printStackTrace();
             return null;
         }
-
     }
 }
