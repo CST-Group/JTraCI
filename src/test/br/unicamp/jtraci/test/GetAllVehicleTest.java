@@ -36,15 +36,15 @@ public class GetAllVehicleTest {
     @Test
     public void GetAllVehicles(){
 
-        for(int i=0; i<100; i++)
+        for(int i=0; i<10; i++)
             sumoSimulation.nextStep();
 
         ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoSimulation.getConnection(), Vehicle.class);
 
         List<Vehicle> vehicles = vehicleReadQuery.getAll();
 
+        vehicles.get(0).getSpeed();
 
-        ObjectBuilder o = new ObjectBuilder();
-        o.convertToEntity(Vehicle.class);
+
     }
 }

@@ -11,6 +11,10 @@
 
 package br.unicamp.jtraci.entities;
 
+import br.unicamp.jtraci.query.ReadQuery;
+import br.unicamp.jtraci.simulation.SumoSimulation;
+import br.unicamp.jtraci.util.Constants;
+
 public class Vehicle extends Entity {
 
     private int postion; //REVIEW THE TYPE.
@@ -35,5 +39,198 @@ public class Vehicle extends Entity {
     private double fuelConsumption;
     private double noiseEmission;
     private double electricityConsumption;
+    private ReadQuery<Vehicle> vehicleReadQuery;
 
+
+    public Vehicle(){
+        setVehicleReadQuery(new ReadQuery<Vehicle>(SumoSimulation.getInstance().getConnection(), Vehicle.class));
+    }
+
+
+    public int getPostion() {
+        return postion;
+    }
+
+    public void setPostion(int postion) {
+        this.postion = postion;
+    }
+
+    public double getSpeed() {
+
+        getVehicleReadQuery().getPropertyValue(Constants.VAR_SPEED, getID());
+
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
+
+    public String getEdgeID() {
+        return edgeID;
+    }
+
+    public void setEdgeID(String edgeID) {
+        this.edgeID = edgeID;
+    }
+
+    public String getLaneID() {
+        return laneID;
+    }
+
+    public void setLaneID(String laneID) {
+        this.laneID = laneID;
+    }
+
+    public int getLaneIndex() {
+        return laneIndex;
+    }
+
+    public void setLaneIndex(int laneIndex) {
+        this.laneIndex = laneIndex;
+    }
+
+    public String getTypeID() {
+        return typeID;
+    }
+
+    public void setTypeID(String typeID) {
+        this.typeID = typeID;
+    }
+
+    public String getRouteID() {
+        return routeID;
+    }
+
+    public void setRouteID(String routeID) {
+        this.routeID = routeID;
+    }
+
+    public int getRouteIndex() {
+        return routeIndex;
+    }
+
+    public void setRouteIndex(int routeIndex) {
+        this.routeIndex = routeIndex;
+    }
+
+    public String[] getEdges() {
+        return edges;
+    }
+
+    public void setEdges(String[] edges) {
+        this.edges = edges;
+    }
+
+    public byte[] getColor() {
+        return color;
+    }
+
+    public void setColor(byte[] color) {
+        this.color = color;
+    }
+
+    public double getLanePostion() {
+        return lanePostion;
+    }
+
+    public void setLanePostion(double lanePostion) {
+        this.lanePostion = lanePostion;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public int getSignalState() {
+        return signalState;
+    }
+
+    public void setSignalState(int signalState) {
+        this.signalState = signalState;
+    }
+
+    public double getCo2() {
+        return co2;
+    }
+
+    public void setCo2(double co2) {
+        this.co2 = co2;
+    }
+
+    public double getCo() {
+        return co;
+    }
+
+    public void setCo(double co) {
+        this.co = co;
+    }
+
+    public double getHc() {
+        return hc;
+    }
+
+    public void setHc(double hc) {
+        this.hc = hc;
+    }
+
+    public double getPmx() {
+        return pmx;
+    }
+
+    public void setPmx(double pmx) {
+        this.pmx = pmx;
+    }
+
+    public double getNox() {
+        return nox;
+    }
+
+    public void setNox(double nox) {
+        this.nox = nox;
+    }
+
+    public double getFuelConsumption() {
+        return fuelConsumption;
+    }
+
+    public void setFuelConsumption(double fuelConsumption) {
+        this.fuelConsumption = fuelConsumption;
+    }
+
+    public double getNoiseEmission() {
+        return noiseEmission;
+    }
+
+    public void setNoiseEmission(double noiseEmission) {
+        this.noiseEmission = noiseEmission;
+    }
+
+    public double getElectricityConsumption() {
+        return electricityConsumption;
+    }
+
+    public void setElectricityConsumption(double electricityConsumption) {
+        this.electricityConsumption = electricityConsumption;
+    }
+
+    public ReadQuery<Vehicle> getVehicleReadQuery() {
+        return vehicleReadQuery;
+    }
+
+    public void setVehicleReadQuery(ReadQuery<Vehicle> vehicleReadQuery) {
+        this.vehicleReadQuery = vehicleReadQuery;
+    }
 }

@@ -11,12 +11,14 @@
 
 package br.unicamp.jtraci.query;
 
+import br.unicamp.jtraci.communication.Command;
+import br.unicamp.jtraci.communication.CommandResult;
 import br.unicamp.jtraci.entities.Entity;
+
+import java.util.*;
 
 
 public class ObjectBuilder {
-
-
 
 
     public ObjectBuilder(){
@@ -24,12 +26,47 @@ public class ObjectBuilder {
     }
 
 
-    public void convertToEntity(Class<?> entityType){
+    public List<Entity> convertToEntity(Class<?> entityType, CommandResult commandResult){
 
-        if(entityType.isAssignableFrom(Entity.class)){
+        try {
+            if (Entity.class.isAssignableFrom(entityType)) {
 
-            entityType.getDeclaredFields();
+                int window = commandResult.getResult()[0] + commandResult.getCommand().getCommandLength() + 1;
 
+                List<Entity> entities = new ArrayList<Entity>();
+
+                while(window < commandResult.getResult().length) {
+
+                    int infoLen = Integer. (Arrays.copyOfRange(commandResult.getResult(), window, window + 4));
+
+                    byte[] id = Arrays.copyOfRange(commandResult.getResult(), window, window + 5);
+
+                    window += 5;
+
+                    try {
+                        Entity entity = (Entity) entityType.newInstance();
+                        entity.setID(new String(id, "US-ASCII"));
+
+                        entities.add(entity);
+
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                return entities;
+            }
+
+            else
+                throw new Exception("Class isn't a Entity inheritance");
         }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+
     }
 }

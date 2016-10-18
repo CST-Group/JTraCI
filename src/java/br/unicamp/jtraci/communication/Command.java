@@ -32,6 +32,10 @@ public class Command {
 
     private String objectID;
 
+    private int commandLength;
+
+    private byte[] command;
+
     public Command() {
         content = new ArrayList<Byte>();
         this.cmdID = -1;
@@ -92,7 +96,9 @@ public class Command {
         List<Byte> lst0 = this.convertByteVal(0);
         commandList.addAll(lst0);
 
-        List<Byte> lstHead = this.convertIntVal(HEADER_SIZE + getContent().size());
+        this.setCommandLength(HEADER_SIZE + getContent().size());
+
+        List<Byte> lstHead = this.convertIntVal(getCommandLength());
         commandList.addAll(lstHead);
 
         List<Byte> lstCmdId = this.convertUnsignedByteVal(getCmdID());
@@ -104,6 +110,8 @@ public class Command {
 
         for (int i = 0; i < commandList.size(); i++)
             message[i] = commandList.get(i);
+
+        this.command = message;
 
         return message;
     }
@@ -252,5 +260,13 @@ public class Command {
 
     public void setObjectID(String objectID) {
         this.objectID = objectID;
+    }
+
+    public int getCommandLength() {
+        return commandLength;
+    }
+
+    public void setCommandLength(int commandLength) {
+        this.commandLength = commandLength;
     }
 }

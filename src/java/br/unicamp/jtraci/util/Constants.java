@@ -37,4 +37,7 @@ public class Constants {
 
     /** ids of vehicles ending to teleport (get: simulation) */
     public static final int VAR_TELEPORT_ENDING_VEHICLES_IDS = 0x78;
+
+    /** speed (get: vehicle) */
+    public static final int VAR_SPEED = 0x40;
 }

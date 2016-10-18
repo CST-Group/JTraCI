@@ -11,8 +11,10 @@
 
 package br.unicamp.jtraci.communication;
 
+
 public class CommandResult {
 
+    private String resultID;
     private Command command;
     private byte[] result;
 
@@ -21,6 +23,8 @@ public class CommandResult {
     }
 
     public CommandResult(Command command, byte[] result){
+
+        this.setResultID(CommandResult.class.getSimpleName() + "_" + System.currentTimeMillis());
         this.setCommand(command);
         this.setResult(result);
     }
@@ -35,5 +39,13 @@ public class CommandResult {
 
     public void setResult(byte[] result) {
         this.result = result;
+    }
+
+    public String getResultID() {
+        return resultID;
+    }
+
+    public void setResultID(String resultID) {
+        this.resultID = resultID;
     }
 }
