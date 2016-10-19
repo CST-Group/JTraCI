@@ -36,10 +36,15 @@ public class GetAllVehicleTest {
     @Test
     public void GetAllVehicles(){
 
-        for(int i=0; i<100; i++)
+        for(int i=0; i<10; i++)
             sumoSimulation.nextStep();
-        
+             
+
         List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
-        
+
+        vehicles.get(0).getSpeed();
+        vehicles.get(0).getAngle();
+        vehicles.get(0).getLaneID();
+
     }
 }

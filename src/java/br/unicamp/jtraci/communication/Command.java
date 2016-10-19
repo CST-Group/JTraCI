@@ -24,19 +24,21 @@ public class Command {
             + Integer.SIZE / 8  // integer length
             + Byte.SIZE / 8;
 
+    private String id;
     private List<Byte> content;
-
     private int cmdID;
-
     private int varID;
-
     private String objectID;
+    private int commandLength;
+    private byte[] command;
 
     public Command() {
         content = new ArrayList<Byte>();
         this.cmdID = -1;
         this.varID = -1;
         this.objectID = "";
+        this.setId(Command.class.getSimpleName() + "_" + System.currentTimeMillis());
+
     }
 
     public Command(int cmdID) {
@@ -44,6 +46,7 @@ public class Command {
         this.cmdID = cmdID;
         this.varID = -1;
         this.objectID = null;
+        this.setId(Command.class.getSimpleName() + "_" + System.currentTimeMillis());
     }
 
     public Command(int cmdID, int varID) {
@@ -51,6 +54,7 @@ public class Command {
         this.cmdID = cmdID;
         this.varID = varID;
         this.objectID = "";
+        this.setId(Command.class.getSimpleName() + "_" + System.currentTimeMillis());
 
         this.addHeaderParameters();
     }
@@ -60,6 +64,7 @@ public class Command {
         this.cmdID = cmdID;
         this.varID = varID;
         this.objectID = objectID;
+        this.setId(Command.class.getSimpleName() + "_" + System.currentTimeMillis());
 
         this.addHeaderParameters();
     }
@@ -76,7 +81,7 @@ public class Command {
         }
 
         if(getObjectID() != null){
-            List<Byte> varIDBytes =  this.convertStringUTF8Val(getObjectID());
+            List<Byte> varIDBytes =  convertStringUTF8Val(getObjectID());
             for(int i=0; i<varIDBytes.size(); i++)
             {
                 getContent().add(varIDBytes.get(i));
@@ -91,8 +96,10 @@ public class Command {
 
         List<Byte> lst0 = convertByteVal(0);
         commandList.addAll(lst0);
+        
+        this.setCommandLength(HEADER_SIZE + getContent().size());
 
-        List<Byte> lstHead = convertIntVal(HEADER_SIZE + getContent().size());
+        List<Byte> lstHead = convertIntVal(getCommandLength());
         commandList.addAll(lstHead);
 
         List<Byte> lstCmdId = convertUnsignedByteVal(getCmdID());
@@ -104,6 +111,8 @@ public class Command {
 
         for (int i = 0; i < commandList.size(); i++)
             message[i] = commandList.get(i);
+
+        this.command = message;
 
         return message;
     }
@@ -152,11 +161,6 @@ public class Command {
 
         List<Byte> convertList = new ArrayList<Byte>();
 
-        // 0 -> 0
-        // 127 -> 127
-        // 128 -> -128
-        // 255 -> -1
-
         if (value > 127) convertList.add(new Byte((byte) (value - 256)));
         else convertList.add(new Byte((byte) (value)));
 
@@ -204,7 +208,7 @@ public class Command {
         } else if (content instanceof Byte) {
             getContent().add((Byte) content);
         } else if (content instanceof String) {
-            getContent().addAll(this.convertStringUTF8Val((String) content));
+            getContent().addAll(convertStringUTF8Val((String) content));
         }
 
     }
@@ -252,5 +256,21 @@ public class Command {
 
     public void setObjectID(String objectID) {
         this.objectID = objectID;
+    }
+
+    public int getCommandLength() {
+        return commandLength;
+    }
+
+    public void setCommandLength(int commandLength) {
+        this.commandLength = commandLength;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

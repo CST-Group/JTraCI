@@ -37,7 +37,7 @@ public class TestSimulation {
 
         SumoSimulation sumoSimulation = SumoSimulation.getInstance();
 
-        sumoSimulation.runSumoGui("/home/efroes/Items/MAPS/twinT/twinT.sumocfg", port);
+        sumoSimulation.runSumoGui("/home/dufroes/Repository/Maps/twinT/twinT.sumocfg", port);
 
         while(true){
 

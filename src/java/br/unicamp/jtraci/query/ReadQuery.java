@@ -11,7 +11,6 @@
 
 package br.unicamp.jtraci.query;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.unicamp.jtraci.communication.Command;
@@ -23,43 +22,52 @@ import br.unicamp.jtraci.util.Constants;
 
 public class ReadQuery<E extends Entity> {
 
-    private SumoConnection sumoConnection;
-    
-    private Class<E> classE;
+	private SumoConnection sumoConnection;
 
-    public ReadQuery(SumoConnection sumoConnection, Class<E> classE){
-    	this.sumoConnection = sumoConnection;
-        this.classE = classE;
+	private Class<E> classE;
 
-    }
+	public ReadQuery(SumoConnection sumoConnection, Class<E> classE){
+		this.sumoConnection = sumoConnection;
+		this.classE = classE;
 
-    /*public E get(String varID){
-        //E object = new E();
+	}
 
-    }*/
+	public List<E> getAll(){
 
-    public List<E> getAll(){
+		int commandByte = chooseCommand();
+		int varID = Constants.ID_LIST;
+		String objectID = "";
 
-        int commandByte = this.chooseCommand();
-        int varID = Constants.ID_LIST;
-        String objectID = "";
+		Command command = new Command(commandByte, varID, objectID);
+		CommandResult commandResult = sumoConnection.sendCommand(command);
 
-        Command command = new Command(commandByte, varID, objectID);
-        CommandResult commandResult = sumoConnection.sendCommand(command);
+		List<E> entities = (List<E>) commandResult.convertToEntity(this.classE);
 
-        return new ArrayList<E>();
+		return entities;
 
-    }
+	}
+
+	public Object getAttributeValue(int varID, String objectID, Class<?> typeAttribute){
+
+		int commandByte = chooseCommand();
+
+		Command command = new Command(commandByte, varID, objectID);
+		CommandResult commandResult = sumoConnection.sendCommand(command);
+
+		Object attribute = commandResult.convertToEntityAttribute(typeAttribute);
+
+		return attribute;
+	}
 
 
-    public int chooseCommand(){
+	public int chooseCommand(){
 
-        int command = 0;
+		int command = 0;
 
-        if(this.classE.isAssignableFrom(Vehicle.class)){
-            command = Constants.CMD_GET_VEHICLE_VARIABLE;
-        }
+		if(this.classE.isAssignableFrom(Vehicle.class)){
+			command = Constants.CMD_GET_VEHICLE_VARIABLE;
+		}
 
-        return command;
-    }
+		return command;
+	}
 }

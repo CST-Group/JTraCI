@@ -15,7 +15,7 @@ public abstract class Entity {
 
     private String ID;
 
-    private String getID(){
+    public String getID(){
         return this.ID;
     };
 

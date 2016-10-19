@@ -37,4 +37,16 @@ public class Constants {
 
     /** ids of vehicles ending to teleport (get: simulation) */
     public static final int VAR_TELEPORT_ENDING_VEHICLES_IDS = 0x78;
+
+    /** speed (get: vehicle) */
+    public static final int VAR_SPEED = 0x40;
+
+    /** position (2D) (get: vehicle, poi, set: poi) */
+    public static final int VAR_POSITION = 0x42;
+
+    /** angle (get: vehicle) */
+    public static final int VAR_ANGLE = 0x43;
+
+    /** lane id (get: vehicles) */
+    public static final int VAR_LANE_ID = 0x51;
 }

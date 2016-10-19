@@ -19,7 +19,6 @@ import java.util.List;
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.SumoConnection;
 import br.unicamp.jtraci.entities.Vehicle;
-import br.unicamp.jtraci.query.ObjectBuilder;
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.util.Constants;
 
@@ -111,24 +110,13 @@ public class SumoSimulation {
 
     }
 
-	public List<Vehicle> getAllVehicles() {
-		
-		List<Vehicle> vehicles = null;
-		
-		ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoConnection, Vehicle.class);
-		
-		/*
-		 * TODO - Criar cada veículo com seu ID e retorná-lo na lista.
-		 * 
-		 * Daí em diante, cada atributo de veículo pode ser adquirido através de um método getXXXX(), que pode
-		 * acessar o singleton de SumoSimulation diretamente para fazer as queries. 
-		 */
-		
-		vehicles = vehicleReadQuery.getAll();
-		
-		ObjectBuilder o = new ObjectBuilder();
-		o.convertToEntity(Vehicle.class);
-		
-		return vehicles;
-	}
+
+    public List<Vehicle> getAllVehicles(){
+
+        ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoConnection, Vehicle.class);
+
+        return vehicleReadQuery.getAll();
+
+    }
+    
 }
