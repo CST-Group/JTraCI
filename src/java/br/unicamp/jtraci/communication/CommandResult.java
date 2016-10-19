@@ -92,7 +92,7 @@ public class CommandResult {
 
     public Object convertToEntityAttribute(Class<?> attributeType){
 
-        //Head(Y) + Variable(4) Vehicle ID(X) Return type of the variable(4).
+        //Head(Y) + Variable(4) + Vehicle ID(X) + Return type of the variable(4).
         int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
 
         //Calculating information length.

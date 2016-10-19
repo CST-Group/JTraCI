@@ -11,6 +11,8 @@
 
 package br.unicamp.jtraci.simulation;
 
+import br.unicamp.jtraci.entities.Vehicle;
+import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.util.Constants;
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.SumoConnection;
@@ -24,7 +26,7 @@ import java.util.List;
 public class SumoSimulation {
 
     private SumoConnection connection;
-    private int currentStep;
+    private int currentStep = 0;
     private Process sumoProcess;
     private static SumoSimulation sumoSimulation = null;
 
@@ -111,6 +113,15 @@ public class SumoSimulation {
 
 
         getConnection().sendCommandList(commands);
+
+    }
+
+
+    public List<Vehicle> getAllVehicles(){
+
+        ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoSimulation.getConnection(), Vehicle.class);
+
+        return vehicleReadQuery.getAll();
 
     }
 

@@ -24,8 +24,7 @@ public class GetAllVehicleTest {
     private int port = 4011;
     private SumoSimulation sumoSimulation;
 
-    private String pathMap = "/home/efroes/Items/MAPS/twinT/twinT.sumocfg";
-
+    private String pathMap = "/home/dufroes/Repository/Maps/twinT/twinT.sumocfg";
 
 
     @Before
@@ -40,15 +39,12 @@ public class GetAllVehicleTest {
         for(int i=0; i<10; i++)
             sumoSimulation.nextStep();
 
-        ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoSimulation.getConnection(), Vehicle.class);
 
-        List<Vehicle> vehicles = vehicleReadQuery.getAll();
+        List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
 
-        vehicles.get(0).getSpeed(true);
-        vehicles.get(0).getAngle(true);
-        vehicles.get(0).getLaneID(true);
-        //vehicles.get(0).getPostion(true);
-
+        vehicles.get(0).getSpeed();
+        vehicles.get(0).getAngle();
+        vehicles.get(0).getLaneID();
 
     }
 }

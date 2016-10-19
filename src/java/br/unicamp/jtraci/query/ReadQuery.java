@@ -51,7 +51,7 @@ public class ReadQuery<E extends Entity> {
     }
 
 
-    public Object getPropertyValue(int varID, String objectID, Class<?> typeAttribute){
+    public Object getAttributeValue(int varID, String objectID, Class<?> typeAttribute){
 
         int commandByte = this.chooseCommand();
 
@@ -74,8 +74,6 @@ public class ReadQuery<E extends Entity> {
 
         return command;
     }
-
-
 
 
 
