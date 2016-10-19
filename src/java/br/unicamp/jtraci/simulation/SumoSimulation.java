@@ -118,5 +118,10 @@ public class SumoSimulation {
         return vehicleReadQuery.getAll();
 
     }
+
+	public SumoConnection getConnection() {
+		
+		return sumoConnection;
+	}
     
 }

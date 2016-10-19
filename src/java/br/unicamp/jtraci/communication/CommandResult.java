@@ -12,17 +12,18 @@
 package br.unicamp.jtraci.communication;
 
 
-import br.unicamp.jtraci.entities.Entity;
-
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import br.unicamp.jtraci.entities.Entity;
+
 public class CommandResult {
 
     private String id;
+    
     private Command command;
     
     private byte[] result;
