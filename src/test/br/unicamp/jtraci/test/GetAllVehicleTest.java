@@ -12,7 +12,6 @@
 package br.unicamp.jtraci.test;
 
 import br.unicamp.jtraci.entities.Vehicle;
-import br.unicamp.jtraci.query.ObjectBuilder;
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import org.junit.Before;
@@ -26,6 +25,8 @@ public class GetAllVehicleTest {
     private SumoSimulation sumoSimulation;
 
     private String pathMap = "/home/efroes/Items/MAPS/twinT/twinT.sumocfg";
+
+
 
     @Before
     public void setUp(){
@@ -43,7 +44,10 @@ public class GetAllVehicleTest {
 
         List<Vehicle> vehicles = vehicleReadQuery.getAll();
 
-        vehicles.get(0).getSpeed();
+        vehicles.get(0).getSpeed(true);
+        vehicles.get(0).getAngle(true);
+        vehicles.get(0).getLaneID(true);
+        //vehicles.get(0).getPostion(true);
 
 
     }

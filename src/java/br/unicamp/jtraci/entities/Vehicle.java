@@ -47,7 +47,12 @@ public class Vehicle extends Entity {
     }
 
 
-    public int getPostion() {
+    public int getPostion(boolean getFromServer) {
+
+        if(getFromServer){
+            postion = (Integer) (getVehicleReadQuery().getPropertyValue(Constants.VAR_POSITION, getID(), Integer.class));
+        }
+
         return postion;
     }
 
@@ -55,9 +60,11 @@ public class Vehicle extends Entity {
         this.postion = postion;
     }
 
-    public double getSpeed() {
+    public double getSpeed(boolean getFromServer) {
 
-        getVehicleReadQuery().getPropertyValue(Constants.VAR_SPEED, getID());
+        if(getFromServer){
+            speed = (Double)(getVehicleReadQuery().getPropertyValue(Constants.VAR_SPEED, getID(), Double.class));
+        }
 
         return speed;
     }
@@ -66,7 +73,14 @@ public class Vehicle extends Entity {
         this.speed = speed;
     }
 
-    public double getAngle() {
+
+
+    public double getAngle(boolean getFromServer) {
+
+        if(getFromServer){
+            angle = (Double)(getVehicleReadQuery().getPropertyValue(Constants.VAR_ANGLE, getID(), Double.class));
+        }
+
         return angle;
     }
 
@@ -82,7 +96,12 @@ public class Vehicle extends Entity {
         this.edgeID = edgeID;
     }
 
-    public String getLaneID() {
+    public String getLaneID(boolean getFromServer) {
+
+        if(getFromServer){
+            laneID = (String)(getVehicleReadQuery().getPropertyValue(Constants.VAR_LANE_ID, getID(), String.class));
+        }
+
         return laneID;
     }
 

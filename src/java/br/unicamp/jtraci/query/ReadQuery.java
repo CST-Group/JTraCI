@@ -25,13 +25,10 @@ public class ReadQuery<E extends Entity> {
 
     private SumoConnection sumoConnection;
     private Class<E> classE;
-    private ObjectBuilder objectBuilder;
 
     public ReadQuery(SumoConnection sumoConnection, Class<E> classE){
         this.setSumoConnection(sumoConnection);
         this.classE = classE;
-        this.objectBuilder = new ObjectBuilder();
-
     }
 
     public SumoConnection getSumoConnection() {
@@ -54,14 +51,16 @@ public class ReadQuery<E extends Entity> {
     }
 
 
-    public Object getPropertyValue(int varID, String objectID){
+    public Object getPropertyValue(int varID, String objectID, Class<?> typeAttribute){
 
         int commandByte = this.chooseCommand();
 
         Command command = new Command(commandByte, varID, objectID);
         CommandResult commandResult = getSumoConnection().sendCommand(command);
 
-        return new ArrayList<E>();
+        Object attribute = commandResult.convertToEntityAttribute(typeAttribute);
+
+        return attribute;
     }
 
 

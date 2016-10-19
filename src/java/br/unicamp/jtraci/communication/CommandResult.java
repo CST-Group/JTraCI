@@ -14,6 +14,7 @@ package br.unicamp.jtraci.communication;
 
 import br.unicamp.jtraci.entities.Entity;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,23 +42,33 @@ public class CommandResult {
         try {
             if (Entity.class.isAssignableFrom(entityType)) {
 
-                int window = this.getResult()[0] + this.getCommand().getCommandLength() + 1;
+                //8 = Context Domain(4) + Variable Count(4)
+                int window = this.getResult()[0] + 8;
 
                 List<Entity> entities = new ArrayList<Entity>();
 
-                while(window < this.getResult().length) {
-                    int headLen = 4;
+                //Finding out amount of objects.
+                int headLen = 4;
+                ByteBuffer wrapped = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen));
+                int countObjects = wrapped.getInt();
+                window+=headLen;
 
-                    ByteBuffer wrapped = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen));
-                    int infoLen = wrapped.getInt();
+                //Calculating information length.
+                int infoLen = (this.getResult().length - window)/countObjects;
 
-                    byte[] rId = Arrays.copyOfRange(this.getResult(), window + headLen, window + headLen + infoLen);
+                //Reading and Converting objects.
+                for (int i = 0; i < countObjects ; i++) {
 
-                    window += headLen+infoLen;
+                    byte[] rId = Arrays.copyOfRange(this.getResult(), window, window + infoLen);
+                    window += infoLen;
 
                     try {
                         Entity entity = (Entity) entityType.newInstance();
-                        entity.setID(new String(rId, "US-ASCII"));
+
+                        String sId = new String(rId, "US-ASCII");
+                        sId = sId.substring(headLen, sId.length());
+
+                        entity.setID(sId);
 
                         entities.add(entity);
 
@@ -79,9 +90,41 @@ public class CommandResult {
         }
     }
 
+    public Object convertToEntityAttribute(Class<?> attributeType){
 
-    public Object convertToEntityAttribute(){
-        
+        //Head(Y) + Variable(4) Vehicle ID(X) Return type of the variable(4).
+        int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
+
+        //Calculating information length.
+        int infoLen = this.getResult().length - window;
+
+        //Reading attribute value.
+        byte[] value = Arrays.copyOfRange(this.getResult(), window, window + infoLen);
+
+        ByteBuffer byteBuffer = ByteBuffer.wrap(value);
+        Object objectConverted = null;
+
+        //Converting value.
+        if(Double.class.isAssignableFrom(attributeType)){
+            double doubleValue = byteBuffer.getDouble();
+            objectConverted = doubleValue;
+
+        }else if(Integer.class.isAssignableFrom(attributeType)){
+            int intValue = byteBuffer.getInt();
+            objectConverted = intValue;
+        }else if(String.class.isAssignableFrom(attributeType)){
+            try {
+                String valString = new String(value, "US-ASCII");
+                int headLen = 4;
+                valString = valString.substring(headLen, valString.length());
+                objectConverted = valString;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return objectConverted;
+
     }
 
 
