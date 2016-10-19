@@ -11,21 +11,29 @@
 
 package br.unicamp.jtraci.simulation;
 
-import br.unicamp.jtraci.util.Constants;
-import br.unicamp.jtraci.communication.Command;
-import br.unicamp.jtraci.communication.SumoConnection;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.unicamp.jtraci.communication.Command;
+import br.unicamp.jtraci.communication.SumoConnection;
+import br.unicamp.jtraci.entities.Vehicle;
+import br.unicamp.jtraci.query.ObjectBuilder;
+import br.unicamp.jtraci.query.ReadQuery;
+import br.unicamp.jtraci.util.Constants;
+
 
 public class SumoSimulation {
 
-    private SumoConnection connection;
-    private int currentStep;
+    private SumoConnection sumoConnection;
+    /**
+     * The current simulation step, in ms.
+     */
+    private int currentStep = 0;
+    
     private Process sumoProcess;
+    
     private static SumoSimulation sumoSimulation = null;
 
 
@@ -39,14 +47,14 @@ public class SumoSimulation {
 
     private SumoSimulation(){
 
-        setConnection(new SumoConnection());
+    	sumoConnection = new SumoConnection();
     }
 
     public void connect(InetAddress address, int port) throws Exception {
 
         try {
-            if (getConnection() != null) {
-                getConnection().connect(address, port);
+            if (sumoConnection != null) {
+            	sumoConnection.connect(address, port);
             }
         }catch (Exception ex){
             ex.printStackTrace();
@@ -70,7 +78,7 @@ public class SumoSimulation {
 
         try {
 
-            setSumoProcess(Runtime.getRuntime().exec(sSumoArgs));
+        	sumoProcess = Runtime.getRuntime().exec(sSumoArgs);
 
             connect(InetAddress.getByName("127.0.0.1"), port);
 
@@ -85,23 +93,12 @@ public class SumoSimulation {
         return successfulRun;
     }
 
-    public SumoConnection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(SumoConnection connection) {
-        this.connection = connection;
-    }
-
     public int getCurrentStep() {
         return currentStep;
     }
 
-    public void setCurrentStep(int currentStep) {
-        this.currentStep = currentStep;
-    }
-
-    public void nextStep(){
+    public void nextStep() {
+    	
         List<Command> commands = new ArrayList<Command>();
 
 
@@ -110,15 +107,28 @@ public class SumoSimulation {
         commands.add(command0);
 
 
-        getConnection().sendCommandList(commands);
+        sumoConnection.sendCommandList(commands);
 
     }
 
-    public Process getSumoProcess() {
-        return sumoProcess;
-    }
-
-    public void setSumoProcess(Process sumoProcess) {
-        this.sumoProcess = sumoProcess;
-    }
+	public List<Vehicle> getAllVehicles() {
+		
+		List<Vehicle> vehicles = null;
+		
+		ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoConnection, Vehicle.class);
+		
+		/*
+		 * TODO - Criar cada veículo com seu ID e retorná-lo na lista.
+		 * 
+		 * Daí em diante, cada atributo de veículo pode ser adquirido através de um método getXXXX(), que pode
+		 * acessar o singleton de SumoSimulation diretamente para fazer as queries. 
+		 */
+		
+		vehicles = vehicleReadQuery.getAll();
+		
+		ObjectBuilder o = new ObjectBuilder();
+		o.convertToEntity(Vehicle.class);
+		
+		return vehicles;
+	}
 }

@@ -11,21 +11,21 @@
 
 package br.unicamp.jtraci.test;
 
-import br.unicamp.jtraci.entities.Vehicle;
-import br.unicamp.jtraci.query.ObjectBuilder;
-import br.unicamp.jtraci.query.ReadQuery;
-import br.unicamp.jtraci.simulation.SumoSimulation;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
+import br.unicamp.jtraci.entities.Vehicle;
+import br.unicamp.jtraci.simulation.SumoSimulation;
 
 public class GetAllVehicleTest {
 
     private int port = 4011;
     private SumoSimulation sumoSimulation;
 
-    private String pathMap = "/home/efroes/Items/MAPS/twinT/twinT.sumocfg";
+//    private String pathMap = "/home/efroes/Items/MAPS/twinT/twinT.sumocfg";
+    private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
 
     @Before
     public void setUp(){
@@ -38,13 +38,8 @@ public class GetAllVehicleTest {
 
         for(int i=0; i<100; i++)
             sumoSimulation.nextStep();
-
-        ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoSimulation.getConnection(), Vehicle.class);
-
-        List<Vehicle> vehicles = vehicleReadQuery.getAll();
-
-
-        ObjectBuilder o = new ObjectBuilder();
-        o.convertToEntity(Vehicle.class);
+        
+        List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
+        
     }
 }

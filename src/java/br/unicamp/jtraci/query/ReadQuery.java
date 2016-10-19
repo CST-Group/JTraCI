@@ -11,6 +11,9 @@
 
 package br.unicamp.jtraci.query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.CommandResult;
 import br.unicamp.jtraci.communication.SumoConnection;
@@ -18,24 +21,17 @@ import br.unicamp.jtraci.entities.Entity;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.util.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ReadQuery<E extends Entity> {
 
     private SumoConnection sumoConnection;
+    
     private Class<E> classE;
 
     public ReadQuery(SumoConnection sumoConnection, Class<E> classE){
-        this.setSumoConnection(sumoConnection);
+    	this.sumoConnection = sumoConnection;
         this.classE = classE;
 
     }
-
-    public SumoConnection getSumoConnection() {
-        return sumoConnection;
-    }
-
 
     /*public E get(String varID){
         //E object = new E();
@@ -49,7 +45,7 @@ public class ReadQuery<E extends Entity> {
         String objectID = "";
 
         Command command = new Command(commandByte, varID, objectID);
-        CommandResult commandResult = getSumoConnection().sendCommand(command);
+        CommandResult commandResult = sumoConnection.sendCommand(command);
 
         return new ArrayList<E>();
 
@@ -65,13 +61,5 @@ public class ReadQuery<E extends Entity> {
         }
 
         return command;
-    }
-
-
-
-
-
-    public void setSumoConnection(SumoConnection sumoConnection) {
-        this.sumoConnection = sumoConnection;
     }
 }

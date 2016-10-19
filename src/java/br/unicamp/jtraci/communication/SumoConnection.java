@@ -11,7 +11,12 @@
 
 package br.unicamp.jtraci.communication;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -27,16 +32,7 @@ public class SumoConnection {
 
     private DataOutputStream dos;
 
-    /**
-     * The current simulation step, in ms.
-     */
-    private int currentSimStep = 0;
-
-    public SumoConnection() {
-
-        socket = new Socket();
-
-    }
+    public SumoConnection() {}
 
     public boolean connect(InetAddress addr, int port) throws Exception {
 
@@ -64,15 +60,19 @@ public class SumoConnection {
     }
 
     public boolean isConnected() {
-        return socket.isConnected();
+    	
+    	boolean isConnected = false;
+    	
+    	if(socket != null)
+    		isConnected = socket.isConnected();
+    		
+        return isConnected;
     }
 
     public CommandResult sendCommand(Command command) {
 
         CommandResult commandResult = null;
 
-        int totalLenResult = 0;
-        byte[] buffer = null;
         try {
 
             int totalLen = Integer.SIZE / 8;

@@ -68,7 +68,7 @@ public class Command {
 
         if(getVarID() != -1)
         {
-            List<Byte> varIDBytes =  this.convertUnsignedByteVal(getVarID());
+            List<Byte> varIDBytes =  convertUnsignedByteVal(getVarID());
             for(int i=0; i<varIDBytes.size(); i++)
             {
                 getContent().add(varIDBytes.get(i));
@@ -89,13 +89,13 @@ public class Command {
 
         List<Byte> commandList = new ArrayList<Byte>();
 
-        List<Byte> lst0 = this.convertByteVal(0);
+        List<Byte> lst0 = convertByteVal(0);
         commandList.addAll(lst0);
 
-        List<Byte> lstHead = this.convertIntVal(HEADER_SIZE + getContent().size());
+        List<Byte> lstHead = convertIntVal(HEADER_SIZE + getContent().size());
         commandList.addAll(lstHead);
 
-        List<Byte> lstCmdId = this.convertUnsignedByteVal(getCmdID());
+        List<Byte> lstCmdId = convertUnsignedByteVal(getCmdID());
         commandList.addAll(lstCmdId);
 
         byte[] message = new byte[commandList.size() + getContent().size()];
@@ -200,7 +200,7 @@ public class Command {
     public void addContent(Object content) {
 
         if (content instanceof Integer) {
-            getContent().addAll( this.convertIntVal((Integer) content));
+            getContent().addAll(convertIntVal((Integer) content));
         } else if (content instanceof Byte) {
             getContent().add((Byte) content);
         } else if (content instanceof String) {
@@ -233,7 +233,7 @@ public class Command {
     }
 
     public int getMessageSize() {
-        return this.HEADER_SIZE + getContent().size();
+        return HEADER_SIZE + getContent().size();
     }
 
 

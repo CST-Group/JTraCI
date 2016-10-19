@@ -14,6 +14,7 @@ package br.unicamp.jtraci.communication;
 public class CommandResult {
 
     private Command command;
+    
     private byte[] result;
 
     public Command getCommand() {
