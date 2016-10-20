@@ -18,6 +18,7 @@ import java.util.List;
 
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.SumoConnection;
+import br.unicamp.jtraci.entities.Lane;
 import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.query.ReadQuery;
@@ -127,6 +128,13 @@ public class SumoSimulation {
 		ReadQuery<TrafficLight> trafficLightReadQuery = new ReadQuery<TrafficLight>(sumoConnection, TrafficLight.class);
 
         return trafficLightReadQuery.getAll();
+	}
+
+	public List<Lane> getAllLanes() {
+		
+		ReadQuery<Lane> laneReadQuery = new ReadQuery<Lane>(sumoConnection, Lane.class);
+
+        return laneReadQuery.getAll();
 	}
     
 }

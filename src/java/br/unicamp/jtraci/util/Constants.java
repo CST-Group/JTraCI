@@ -61,4 +61,14 @@ public class Constants {
 	public static final int VAR_TL_CURRENT_PROGRAM = 0x29;
 
 	public static final int VAR_TL_ASSUMED_TIME_OF_NEXT_SWITCH = 0x2d;
+
+	public static final int CMD_GET_LANE_VARIABLE = 0xa3;
+
+	public static final int VAR_LANE_EDGE_ID = 0x31;
+
+	public static final int VAR_LANE_LENGTH = 0x44;
+
+	public static final int VAR_LANE_VMAX = 0x41;
+
+	public static final int VAR_LANE_WIDTH = 0x4d;
 }

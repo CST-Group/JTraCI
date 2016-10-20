@@ -16,6 +16,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.unicamp.jtraci.entities.Lane;
 import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.simulation.SumoSimulation;
@@ -54,6 +55,13 @@ public class GetAllVehicleTest {
         trafficLights.get(0).getCurrentPhase();
         trafficLights.get(0).getCurrentProgram();
         trafficLights.get(0).getAssumedTimeOfNextSwitch();
+        
+        List<Lane> lanes = sumoSimulation.getAllLanes();
+        
+        lanes.get(0).getEdgeId();
+        lanes.get(0).getLength();
+        lanes.get(0).getVMax();
+        lanes.get(0).getWidth();
 
     }
 }

@@ -18,29 +18,53 @@ import br.unicamp.jtraci.util.Constants;
 public class Vehicle extends Entity {
 
     private int postion; //REVIEW THE TYPE.
+    
+    /** Returns the speed of the named vehicle within the last step [m/s]; error value: -1001 */
     private double speed;
+    
+    /** Returns the angle of the named vehicle within the last step [°]; error value: -1001 */
     private double angle;
+    
     private String edgeID;
+    
+    /** Returns the id of the lane the named vehicle was at within the last step; error value: "" */
     private String laneID;
+    
     private int laneIndex;
+    
     private String typeID;
+    
     private String routeID;
+    
     private int routeIndex;
+    
     private String[] edges;
+    
     private byte[] color;
+    
     private double lanePostion;
+    
     private double distance;
+    
     private int signalState; //REVIEW THIS ATTRIBUTE.
+    
     private double co2;
+    
     private double co;
+    
     private double hc;
+    
     private double pmx;
+    
     private double nox;
+    
     private double fuelConsumption;
+    
     private double noiseEmission;
+    
     private double electricityConsumption;
+    
     private ReadQuery<Vehicle> vehicleReadQuery;
-
 
     public Vehicle(){
     	vehicleReadQuery = new ReadQuery<Vehicle>(SumoSimulation.getInstance().getConnection(), Vehicle.class);
