@@ -17,6 +17,7 @@ import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.CommandResult;
 import br.unicamp.jtraci.communication.SumoConnection;
 import br.unicamp.jtraci.entities.Entity;
+import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.util.Constants;
 
@@ -60,12 +61,18 @@ public class ReadQuery<E extends Entity> {
 	}
 
 
-	public int chooseCommand(){
+	private int chooseCommand(){
 
 		int command = 0;
 
 		if(this.classE.isAssignableFrom(Vehicle.class)){
+			
 			command = Constants.CMD_GET_VEHICLE_VARIABLE;
+			
+		} else if(this.classE.isAssignableFrom(TrafficLight.class)){
+			
+			command = Constants.CMD_GET_TRAFFIC_LIGHT_VARIABLE;
+			
 		}
 
 		return command;

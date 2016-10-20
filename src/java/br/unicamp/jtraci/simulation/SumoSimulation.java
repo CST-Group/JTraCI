@@ -18,6 +18,7 @@ import java.util.List;
 
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.SumoConnection;
+import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.util.Constants;
@@ -31,10 +32,7 @@ public class SumoSimulation {
      */
     private int currentStep = 0;
     
-    private Process sumoProcess;
-    
     private static SumoSimulation sumoSimulation = null;
-
 
     public static SumoSimulation getInstance(){
 
@@ -77,7 +75,7 @@ public class SumoSimulation {
 
         try {
 
-        	sumoProcess = Runtime.getRuntime().exec(sSumoArgs);
+        	Runtime.getRuntime().exec(sSumoArgs);
 
             connect(InetAddress.getByName("127.0.0.1"), port);
 
@@ -122,6 +120,13 @@ public class SumoSimulation {
 	public SumoConnection getConnection() {
 		
 		return sumoConnection;
+	}
+
+	public List<TrafficLight> getAllTrafficLights() {
+		
+		ReadQuery<TrafficLight> trafficLightReadQuery = new ReadQuery<TrafficLight>(sumoConnection, TrafficLight.class);
+
+        return trafficLightReadQuery.getAll();
 	}
     
 }

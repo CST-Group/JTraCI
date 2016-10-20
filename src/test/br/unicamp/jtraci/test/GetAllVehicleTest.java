@@ -16,6 +16,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 
@@ -36,7 +37,7 @@ public class GetAllVehicleTest {
     @Test
     public void GetAllVehicles(){
 
-        for(int i=0; i<10; i++)
+        for(int i=0; i<50; i++)
             sumoSimulation.nextStep();
              
 
@@ -45,6 +46,11 @@ public class GetAllVehicleTest {
         vehicles.get(0).getSpeed();
         vehicles.get(0).getAngle();
         vehicles.get(0).getLaneID();
+        
+        List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
+                
+        trafficLights.get(0).getState();
+        trafficLights.get(1).getState();
 
     }
 }

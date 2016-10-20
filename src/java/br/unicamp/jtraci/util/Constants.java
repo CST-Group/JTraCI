@@ -49,4 +49,8 @@ public class Constants {
 
     /** lane id (get: vehicles) */
     public static final int VAR_LANE_ID = 0x51;
+
+	public static final int CMD_GET_TRAFFIC_LIGHT_VARIABLE = 0xa2;
+
+	public static final int VAR_TL_STATE = 0x20;
 }

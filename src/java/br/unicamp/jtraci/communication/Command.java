@@ -30,7 +30,6 @@ public class Command {
     private int varID;
     private String objectID;
     private int commandLength;
-    private byte[] command;
 
     public Command() {
         content = new ArrayList<Byte>();
@@ -111,8 +110,6 @@ public class Command {
 
         for (int i = 0; i < commandList.size(); i++)
             message[i] = commandList.get(i);
-
-        this.command = message;
 
         return message;
     }
