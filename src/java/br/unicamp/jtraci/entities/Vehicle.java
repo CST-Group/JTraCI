@@ -73,28 +73,28 @@ public class Vehicle extends Entity {
 
     public int getPostion() {
 
-        postion = (Integer) (vehicleReadQuery.getAttributeValue(Constants.VAR_POSITION, getID(), Integer.class));
+        postion = (Integer) (vehicleReadQuery.getAttributeValue(Constants.VAR_POSITION, ID, Integer.class));
 
         return postion;
     }
 
     public double getSpeed() {
 
-        speed = (Double)(vehicleReadQuery.getAttributeValue(Constants.VAR_SPEED, getID(), Double.class));
+        speed = (Double)(vehicleReadQuery.getAttributeValue(Constants.VAR_SPEED, ID, Double.class));
 
         return speed;
     }
 
     public double getAngle() {
 
-        angle = (Double)(vehicleReadQuery.getAttributeValue(Constants.VAR_ANGLE, getID(), Double.class));
+        angle = (Double)(vehicleReadQuery.getAttributeValue(Constants.VAR_ANGLE, ID, Double.class));
 
         return angle;
     }
 
     public String getLaneID() {
 
-        laneID = (String)(vehicleReadQuery.getAttributeValue(Constants.VAR_LANE_ID, getID(), String.class));
+        laneID = (String)(vehicleReadQuery.getAttributeValue(Constants.VAR_LANE_ID, ID, String.class));
 
         return laneID;
     }

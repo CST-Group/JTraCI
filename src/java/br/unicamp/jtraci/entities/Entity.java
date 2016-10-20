@@ -13,13 +13,9 @@ package br.unicamp.jtraci.entities;
 
 public abstract class Entity {
 
-    private String ID;
+    protected String ID;
 
     public String getID(){
         return this.ID;
     };
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
 }

@@ -62,6 +62,11 @@ public class GetAllVehicleTest {
         lanes.get(0).getLength();
         lanes.get(0).getVMax();
         lanes.get(0).getWidth();
+        lanes.get(0).getLastStepVehicleNumber();
+        lanes.get(0).getLastStepMeanSpeed();
+        lanes.get(0).getLastStepOccupancy();
+        lanes.get(0).getlastStepMeanVehicleLength();
+        lanes.get(0).getWaitingTime();
 
     }
 }

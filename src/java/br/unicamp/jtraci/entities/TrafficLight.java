@@ -39,7 +39,7 @@ public class TrafficLight extends Entity {
 
 	public String getState() {
 		
-		state = (String)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_STATE, getID(), String.class));
+		state = (String)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_STATE, ID, String.class));
 		
 		return state;
 		
@@ -47,7 +47,7 @@ public class TrafficLight extends Entity {
 
 	public Integer getCurrentPhaseDuration() {
 		
-		currentPhaseDuration = (Integer)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_CURRENT_PHASE_DURATION, getID(), Integer.class));
+		currentPhaseDuration = (Integer)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_CURRENT_PHASE_DURATION, ID, Integer.class));
 		
 		return currentPhaseDuration;
 		
@@ -55,7 +55,7 @@ public class TrafficLight extends Entity {
 
 	public Integer getCurrentPhase() {
 		
-		currentPhase = (Integer)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_CURRENT_PHASE, getID(), Integer.class));
+		currentPhase = (Integer)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_CURRENT_PHASE, ID, Integer.class));
 		
 		return currentPhase;
 		
@@ -63,7 +63,7 @@ public class TrafficLight extends Entity {
 
 	public String getCurrentProgram() {
 		
-		currentProgram = (String)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_CURRENT_PROGRAM, getID(), String.class));
+		currentProgram = (String)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_CURRENT_PROGRAM, ID, String.class));
 		
 		return currentProgram;
 		
@@ -71,7 +71,7 @@ public class TrafficLight extends Entity {
 
 	public Integer getAssumedTimeOfNextSwitch() {
 		
-		assumedTimeOfNextSwitch = (Integer)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_ASSUMED_TIME_OF_NEXT_SWITCH, getID(), Integer.class));
+		assumedTimeOfNextSwitch = (Integer)(trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_ASSUMED_TIME_OF_NEXT_SWITCH, ID, Integer.class));
 		
 		return assumedTimeOfNextSwitch;
 		

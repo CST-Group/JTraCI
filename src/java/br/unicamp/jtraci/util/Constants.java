@@ -71,4 +71,14 @@ public class Constants {
 	public static final int VAR_LANE_VMAX = 0x41;
 
 	public static final int VAR_LANE_WIDTH = 0x4d;
+
+	public static final int VAR_LANE_LAST_STEP_VEHICLE_NUMBER = 0x10;
+
+	public static final int VAR_LANE_LAST_STEP_MEAN_SPEED = 0x11;
+
+	public static final int VAR_LANE_LAST_STEP_OCCUPANCY = 0x13;
+
+	public static final int VAR_LANE_LAST_STEP_MEAN_VEHICLE_LENGTH = 0x15;
+
+	public static final int VAR_LANE_WAITING_TIME = 0x7a;
 }
