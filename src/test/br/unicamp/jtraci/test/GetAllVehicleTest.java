@@ -50,7 +50,10 @@ public class GetAllVehicleTest {
         List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
                 
         trafficLights.get(0).getState();
-        trafficLights.get(1).getState();
+        trafficLights.get(0).getCurrentPhaseDuration();
+        trafficLights.get(0).getCurrentPhase();
+        trafficLights.get(0).getCurrentProgram();
+        trafficLights.get(0).getAssumedTimeOfNextSwitch();
 
     }
 }

@@ -53,4 +53,12 @@ public class Constants {
 	public static final int CMD_GET_TRAFFIC_LIGHT_VARIABLE = 0xa2;
 
 	public static final int VAR_TL_STATE = 0x20;
+
+	public static final int VAR_TL_CURRENT_PHASE_DURATION = 0x24;
+
+	public static final int VAR_TL_CURRENT_PHASE = 0x28;
+
+	public static final int VAR_TL_CURRENT_PROGRAM = 0x29;
+
+	public static final int VAR_TL_ASSUMED_TIME_OF_NEXT_SWITCH = 0x2d;
 }
