@@ -15,6 +15,8 @@ import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
 
+import java.util.List;
+
 public class Vehicle extends Entity {
 
     private int postion; //REVIEW THE TYPE.
@@ -37,7 +39,9 @@ public class Vehicle extends Entity {
     private String routeID;
 
     private int routeIndex;
+
     private List<String> edges;
+
     private byte[] color;
 
     private double lanePostion;
@@ -64,7 +68,6 @@ public class Vehicle extends Entity {
 
     private ReadQuery<Vehicle> vehicleReadQuery;
 
-
     public Vehicle(){
     	vehicleReadQuery = new ReadQuery<Vehicle>(SumoSimulation.getInstance().getConnection(), Vehicle.class);
     }
@@ -72,29 +75,37 @@ public class Vehicle extends Entity {
 
     public int getPostion() {
 
-        postion = (Integer) (vehicleReadQuery.getAttributeValue(Constants.VAR_POSITION, getID(), Integer.class));
+        postion = (Integer) (vehicleReadQuery.getAttributeValue(Constants.VAR_POSITION, ID, Integer.class));
 
         return postion;
     }
 
     public double getSpeed() {
 
-        speed = (Double)(vehicleReadQuery.getAttributeValue(Constants.VAR_SPEED, getID(), Double.class));
+        speed = (Double)(vehicleReadQuery.getAttributeValue(Constants.VAR_SPEED, ID, Double.class));
 
         return speed;
     }
 
     public double getAngle() {
 
-        angle = (Double)(vehicleReadQuery.getAttributeValue(Constants.VAR_ANGLE, getID(), Double.class));
+        angle = (Double)(vehicleReadQuery.getAttributeValue(Constants.VAR_ANGLE, ID, Double.class));
 
         return angle;
     }
 
     public String getLaneID() {
 
-        laneID = (String)(vehicleReadQuery.getAttributeValue(Constants.VAR_LANE_ID, getID(), String.class));
+        laneID = (String)(vehicleReadQuery.getAttributeValue(Constants.VAR_LANE_ID, ID, String.class));
 
         return laneID;
+    }
+
+
+    public List<String> getEdges() {
+
+        edges = (List<String>)(vehicleReadQuery.getAttributeValue(Constants.VAR_EDGES, getID(), List.class));
+
+        return edges;
     }
 }
