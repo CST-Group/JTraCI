@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import br.unicamp.jtraci.entities.Entity;
@@ -23,9 +24,9 @@ import br.unicamp.jtraci.entities.Entity;
 public class CommandResult {
 
     private String id;
-    
+
     private Command command;
-    
+
     private byte[] result;
 
     public Command getCommand() {
@@ -55,20 +56,22 @@ public class CommandResult {
                 int countObjects = wrapped.getInt();
                 window+=headLen;
 
-                //Calculating information length.
-                int infoLen = (this.getResult().length - window)/countObjects;
+                //int infoLen = (this.getResult().length - window + 1)/countObjects;
 
                 //Reading and Converting objects.
                 for (int i = 0; i < countObjects ; i++) {
 
-                    byte[] rId = Arrays.copyOfRange(this.getResult(), window, window + infoLen);
-                    window += infoLen;
+                    //Calculating information length.
+                    int infoLen = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen)).getInt();
+
+                    byte[] rId = Arrays.copyOfRange(this.getResult(), window + headLen, window + headLen + infoLen);
+                    window += headLen + infoLen;
 
                     try {
                         Entity entity = (Entity) entityType.newInstance();
 
                         String sId = new String(rId, "US-ASCII");
-                        sId = sId.substring(headLen, sId.length());
+                        //sId = sId.substring(headLen, sId.length());
 
                         entity.setID(sId);
 
@@ -94,6 +97,7 @@ public class CommandResult {
 
     public Object convertToEntityAttribute(Class<?> attributeType){
 
+        //Normally head length is 7, if is different maybe happened a error.
         //Head(Y) + Variable(4) + Vehicle ID(X) + Return type of the variable(4).
         int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
 
@@ -123,10 +127,33 @@ public class CommandResult {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+        } else if(List.class.isAssignableFrom(attributeType) && attributeType.asSubclass(String.class).isAssignableFrom(String.class)){
+
+            int headLen = 4;
+            int countObjects = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen)).getInt();
+            window += headLen;
+
+            List<Object> objects = new ArrayList<Object>();
+
+            for (int i = 0; i < countObjects ; i++) {
+                infoLen = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen)).getInt();
+                byte[] byteObject = Arrays.copyOfRange(this.getResult(), window + headLen, window + headLen + infoLen);
+
+                String valString = null;
+                try {
+                    valString = new String(byteObject, "US-ASCII");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                objects.add(valString);
+                window += headLen + infoLen;
+            }
+
+            objectConverted = objects;
         }
 
         return objectConverted;
-
     }
 
 

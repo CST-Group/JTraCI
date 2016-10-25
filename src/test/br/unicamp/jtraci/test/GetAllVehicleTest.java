@@ -25,8 +25,8 @@ public class GetAllVehicleTest {
     private int port = 4011;
     private SumoSimulation sumoSimulation;
 
-//    private String pathMap = "/home/efroes/Items/MAPS/twinT/twinT.sumocfg";
-    private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
+    private String pathMap = "/home/efroes/Items/MAPS/twinT/twinT.sumocfg";
+    //private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
 
     @Before
     public void setUp(){
@@ -37,16 +37,18 @@ public class GetAllVehicleTest {
     @Test
     public void GetAllVehicles(){
 
-        for(int i=0; i<50; i++)
+        for(int i=0; i<60; i++)
             sumoSimulation.nextStep();
              
 
         List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
 
+
+        vehicles.get(0).getEdges();
         vehicles.get(0).getSpeed();
         vehicles.get(0).getAngle();
         vehicles.get(0).getLaneID();
-        
+
         List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
                 
         trafficLights.get(0).getState();

@@ -15,6 +15,8 @@ import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
 
+import java.util.List;
+
 public class Vehicle extends Entity {
 
     private int postion; //REVIEW THE TYPE.
@@ -26,7 +28,7 @@ public class Vehicle extends Entity {
     private String typeID;
     private String routeID;
     private int routeIndex;
-    private String[] edges;
+    private List<String> edges;
     private byte[] color;
     private double lanePostion;
     private double distance;
@@ -73,5 +75,13 @@ public class Vehicle extends Entity {
         laneID = (String)(vehicleReadQuery.getAttributeValue(Constants.VAR_LANE_ID, getID(), String.class));
 
         return laneID;
+    }
+
+
+    public List<String> getEdges() {
+
+        edges = (List<String>)(vehicleReadQuery.getAttributeValue(Constants.VAR_EDGES, getID(), List.class));
+
+        return edges;
     }
 }
