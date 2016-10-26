@@ -16,7 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import br.unicamp.jtraci.entities.Entity;
@@ -28,6 +27,10 @@ public class CommandResult {
     private Command command;
 
     private byte[] result;
+
+    private int varCount = 0;
+
+    private boolean bVarCount = false;
 
     public Command getCommand() {
         return command;
@@ -45,18 +48,21 @@ public class CommandResult {
         try {
             if (Entity.class.isAssignableFrom(entityType)) {
 
-                //8 = Context Domain(4) + Variable Count(4)
+                //8 = Context Domain(4) + Object ID(4)
                 int window = this.getResult()[0] + 8;
+                int headLen = 4;
 
                 List<Entity> entities = new ArrayList<Entity>();
 
+                if(isbVarCount()){
+                    varCount = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), this.getResult()[0], this.getResult()[0] + headLen)).getInt();
+                    window+=headLen;
+                }
+
                 //Finding out amount of objects.
-                int headLen = 4;
                 ByteBuffer wrapped = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen));
                 int countObjects = wrapped.getInt();
                 window+=headLen;
-
-                //int infoLen = (this.getResult().length - window + 1)/countObjects;
 
                 //Reading and Converting objects.
                 for (int i = 0; i < countObjects ; i++) {
@@ -71,7 +77,6 @@ public class CommandResult {
                         Entity entity = (Entity) entityType.newInstance();
 
                         String sId = new String(rId, "US-ASCII");
-                        //sId = sId.substring(headLen, sId.length());
 
                         entity.setID(sId);
 
@@ -127,7 +132,7 @@ public class CommandResult {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-        } else if(List.class.isAssignableFrom(attributeType) && attributeType.asSubclass(String.class).isAssignableFrom(String.class)){
+        } else if(List.class.isAssignableFrom(attributeType)){
 
             int headLen = 4;
             int countObjects = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen)).getInt();
@@ -176,5 +181,21 @@ public class CommandResult {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getVarCount() {
+        return varCount;
+    }
+
+    public void setVarCount(int varCount) {
+        this.varCount = varCount;
+    }
+
+    public boolean isbVarCount() {
+        return bVarCount;
+    }
+
+    public void setbVarCount(boolean bVarCount) {
+        this.bVarCount = bVarCount;
     }
 }

@@ -44,7 +44,6 @@ public class GetAllVehicleTest {
 
         List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
 
-
         vehicles.get(0).getEdges();
         vehicles.get(0).getSpeed();
         vehicles.get(0).getAngle();
