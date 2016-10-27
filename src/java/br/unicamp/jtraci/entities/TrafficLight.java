@@ -4,6 +4,7 @@
 package br.unicamp.jtraci.entities;
 
 import br.unicamp.jtraci.query.ReadQuery;
+import br.unicamp.jtraci.query.WriteQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
 
@@ -14,6 +15,9 @@ import br.unicamp.jtraci.util.Constants;
 public class TrafficLight extends Entity {
 	
 	private ReadQuery<TrafficLight> trafficLightReadQuery;
+
+	private WriteQuery<TrafficLight> trafficLightWriteQuery;
+
 	
 	/** Returns the named tl's state as a tuple of light definitions from rRgGyYoO, for red, green, yellow, off, where lower case letters mean that the stream has to decelerate */
 	private String state;
@@ -33,7 +37,7 @@ public class TrafficLight extends Entity {
 	public TrafficLight(){
 		
 		trafficLightReadQuery = new ReadQuery<TrafficLight>(SumoSimulation.getInstance().getConnection(), TrafficLight.class);
-		
+        trafficLightWriteQuery = new WriteQuery<TrafficLight>(SumoSimulation.getInstance().getConnection(), TrafficLight.class);
 		
 	}
 
@@ -43,6 +47,12 @@ public class TrafficLight extends Entity {
 		
 		return state;
 		
+	}
+
+	public void setState(String state){
+
+		trafficLightWriteQuery.setAttributeValue(Constants.VAR_TL_STATE, ID, Constants.TYPE_STRING, state);
+
 	}
 
 	public Integer getCurrentPhaseDuration() {

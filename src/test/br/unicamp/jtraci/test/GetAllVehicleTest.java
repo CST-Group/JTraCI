@@ -11,36 +11,34 @@
 
 package br.unicamp.jtraci.test;
 
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import br.unicamp.jtraci.entities.Lane;
 import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.simulation.SumoSimulation;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
 
 public class GetAllVehicleTest {
 
     private int port = 4011;
     private SumoSimulation sumoSimulation;
 
-    private String pathMap = "/home/efroes/Items/MAPS/twinT/twinT.sumocfg";
+    private String pathMap = "/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg";
     //private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
 
     @Before
     public void setUp(){
         sumoSimulation = SumoSimulation.getInstance();
         sumoSimulation.runSumoGui(pathMap, port);
+
+        for(int i=0; i<60; i++)
+            sumoSimulation.nextStep();
     }
 
     @Test
     public void GetAllVehicles(){
-
-        for(int i=0; i<60; i++)
-            sumoSimulation.nextStep();
-             
 
         List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
 
@@ -70,4 +68,22 @@ public class GetAllVehicleTest {
         lanes.get(0).getWaitingTime();
 
     }
+
+    @Test
+    public void setTrafficLightState(){
+
+        List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
+        trafficLights.get(0).getState();
+
+        trafficLights.get(0).setState("ggggggGggG");
+        sumoSimulation.nextStep();
+
+        trafficLights.get(0).setState("yyyyyyYyyY");
+        sumoSimulation.nextStep();
+
+        trafficLights.get(0).setState("rrrrrrrRrr");
+        sumoSimulation.nextStep();
+
+    }
+
 }

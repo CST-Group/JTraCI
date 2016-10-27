@@ -26,6 +26,11 @@ public class Constants {
     /** command: get vehicle variable */
     public static final int CMD_GET_VEHICLE_VARIABLE = 0xa4;
 
+    public static final int CMD_GET_LANE_VARIABLE = 0xa3;
+
+    /** command: set lane variable */
+    public static final int CMD_SET_LANE_VARIABLE = 0xc3;
+
     /** command: get simulation variable */
     public static final int CMD_GET_SIM_VARIABLE = 0xab;
 
@@ -55,6 +60,9 @@ public class Constants {
 
 	public static final int CMD_GET_TRAFFIC_LIGHT_VARIABLE = 0xa2;
 
+    /** command: set traffic lights variable */
+    public static final int CMD_SET_TRAFFIC_LIGHT_VARIABLE = 0xc2;
+
 	public static final int VAR_TL_STATE = 0x20;
 
 	public static final int VAR_TL_CURRENT_PHASE_DURATION = 0x24;
@@ -64,8 +72,6 @@ public class Constants {
 	public static final int VAR_TL_CURRENT_PROGRAM = 0x29;
 
 	public static final int VAR_TL_ASSUMED_TIME_OF_NEXT_SWITCH = 0x2d;
-
-	public static final int CMD_GET_LANE_VARIABLE = 0xa3;
 
 	public static final int VAR_LANE_EDGE_ID = 0x31;
 
@@ -84,4 +90,33 @@ public class Constants {
 	public static final int VAR_LANE_LAST_STEP_MEAN_VEHICLE_LENGTH = 0x15;
 
 	public static final int VAR_LANE_WAITING_TIME = 0x7a;
+
+
+    // ****************************************
+    // DATA TYPES
+    // ****************************************
+    /** Boundary Box (4 doubles) */
+    public static final byte TYPE_BOUNDINGBOX = 0x05;
+    /** Polygon (2*n doubles) */
+    public static final byte TYPE_POLYGON = 0x06;
+    /** unsigned byte */
+    public static final byte TYPE_UBYTE = 0x07;
+    /** signed byte */
+    public static final byte TYPE_BYTE = 0x08;
+    /** 32 bit signed integer */
+    public static final byte TYPE_INTEGER = 0x09;
+    /** float */
+    public static final byte TYPE_FLOAT = 0x0A;
+    /** double */
+    public static final byte TYPE_DOUBLE = 0x0B;
+    /** 8 bit ASCII string */
+    public static final byte TYPE_STRING = 0x0C;
+    /** list of traffic light phases */
+    public static final byte TYPE_TLPHASELIST = 0x0D;
+    /** list of strings */
+    public static final byte TYPE_STRINGLIST = 0x0E;
+    /** compound object */
+    public static final byte TYPE_COMPOUND = 0x0F;
+    /** color (four ubytes) */
+    public static final byte TYPE_COLOR = 0x11;
 }
