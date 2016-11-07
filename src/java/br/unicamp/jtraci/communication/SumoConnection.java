@@ -154,5 +154,20 @@ public class SumoConnection {
         return commandResults;
     }
 
+	public void close() {
+		
+		try {
+			
+			socket.close();
+			
+			socket = null;
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+
 
 }

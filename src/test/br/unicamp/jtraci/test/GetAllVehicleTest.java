@@ -25,8 +25,8 @@ public class GetAllVehicleTest {
     private int port = 4011;
     private SumoSimulation sumoSimulation;
 
-    private String pathMap = "/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg";
-    //private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
+//    private String pathMap = "/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg";
+    private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
 
     @Before
     public void setUp(){
@@ -53,7 +53,7 @@ public class GetAllVehicleTest {
         trafficLights.get(0).getCurrentPhaseDuration();
         trafficLights.get(0).getCurrentPhase();
         trafficLights.get(0).getCurrentProgram();
-        trafficLights.get(0).getAssumedTimeOfNextSwitch();
+        trafficLights.get(0).getAssumedTimeOfNextSwitch();        
         
         List<Lane> lanes = sumoSimulation.getAllLanes();
         
@@ -66,6 +66,8 @@ public class GetAllVehicleTest {
         lanes.get(0).getLastStepOccupancy();
         lanes.get(0).getlastStepMeanVehicleLength();
         lanes.get(0).getWaitingTime();
+        
+        sumoSimulation.close();
 
     }
 

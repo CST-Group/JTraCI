@@ -136,5 +136,18 @@ public class SumoSimulation {
 
         return laneReadQuery.getAll();
 	}
+
+	public void close() {			
+		
+		List<Command> commands = new ArrayList<Command>();
+
+        Command command0 = new Command(Constants.CMD_CLOSE);        
+        commands.add(command0);
+
+        sumoConnection.sendCommandList(commands);
+		
+        sumoConnection.close();
+        
+	}
     
 }
