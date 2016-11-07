@@ -73,6 +73,14 @@ public class GetAllVehicleTest {
 
     @Test
     public void setTrafficLightState(){
+    	
+    	/** red light -> 'r' */                       
+    	/** red light w/o deceleration -> 'R' */   
+    	/** yellow light -> 'y' */                  
+    	/** yellow light w/out deceleration -> 'Y' */ 
+    	/** green light -> 'g' */                        
+    	/** green light w/out deceleration -> 'G' */     
+    	/** light off -> 'O' */                          
 
         List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
         trafficLights.get(0).getState();

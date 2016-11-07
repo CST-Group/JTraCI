@@ -18,7 +18,13 @@ public class TrafficLight extends Entity {
 
 	private WriteQuery<TrafficLight> trafficLightWriteQuery;
 
-	
+	/** red light -> 'r' */                       
+	/** red light w/o deceleration -> 'R' */   
+	/** yellow light -> 'y' */                  
+	/** yellow light w/out deceleration -> 'Y' */ 
+	/** green light -> 'g' */                        
+	/** green light w/out deceleration -> 'G' */     
+	/** light off -> 'O' */   
 	/** Returns the named tl's state as a tuple of light definitions from rRgGyYoO, for red, green, yellow, off, where lower case letters mean that the stream has to decelerate */
 	private String state;
 	
