@@ -3,6 +3,8 @@
  */
 package br.unicamp.jtraci.entities;
 
+import java.util.List;
+
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.query.WriteQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
@@ -39,6 +41,9 @@ public class TrafficLight extends Entity {
 	
 	/** Returns the assumed time (in milliseconds) at which the tls changes the phase. Please note that the time to switch is not relative to current simulation step (the result returned by the query will be absolute time, counting from simulation start); to obtain relative time, one needs to subtract current simulation time from the result returned by this query. Please also note that the time may vary in the case of actuated/adaptive traffic lights */
 	private Integer assumedTimeOfNextSwitch;
+	
+	/** Returns the complete traffic light program. Structure: Length (integer) -	Number of logics (type + integer ) - 	logic 1 ... 	logic n . For each Logic, structure is: SubID (type + string ) -  	Type (type + integer ) -  	SubParameter (type + compound) -  	Current phase index (type + integer ) -  	Number of phases (type + integer ) - 	Phase 1 	... 	Phase n . For each Phase, structure is: Duration (type + integer ) -  	Duration 1 (type + integer ) -  	Duration 2 (type + integer )  -  	Phase definition (type + stringList )*/
+	private List<Logic> completeDefinition;
 	
 	public TrafficLight(){
 		
@@ -92,5 +97,17 @@ public class TrafficLight extends Entity {
 		return assumedTimeOfNextSwitch;
 		
 	}
+
+	/**
+	 * @return the completeDefinition
+	 */
+	public List<Logic> getCompleteDefinition() {
+		
+		//TODO - implement this compound object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Traffic_Lights_Value_Retrieval
+		
+		return completeDefinition;
+	}
+	
+	
 
 }
