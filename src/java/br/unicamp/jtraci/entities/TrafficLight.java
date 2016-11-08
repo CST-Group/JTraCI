@@ -45,6 +45,9 @@ public class TrafficLight extends Entity {
 	/** Returns the complete traffic light program. Structure: Length (integer) -	Number of logics (type + integer ) - 	logic 1 ... 	logic n . For each Logic, structure is: SubID (type + string ) -  	Type (type + integer ) -  	SubParameter (type + compound) -  	Current phase index (type + integer ) -  	Number of phases (type + integer ) - 	Phase 1 	... 	Phase n . For each Phase, structure is: Duration (type + integer ) -  	Duration 1 (type + integer ) -  	Duration 2 (type + integer )  -  	Phase definition (type + stringList )*/
 	private List<Logic> completeDefinition;
 	
+	/** Returns the links controlled by the traffic light, sorted by the signal index and described by giving the incoming, outgoing, and via lane.  */
+	private List<ControlledLinks> controlledLinksList;
+	
 	public TrafficLight(){
 		
 		trafficLightReadQuery = new ReadQuery<TrafficLight>(SumoSimulation.getInstance().getConnection(), TrafficLight.class);
@@ -106,6 +109,16 @@ public class TrafficLight extends Entity {
 		//TODO - implement this compound object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Traffic_Lights_Value_Retrieval
 		
 		return completeDefinition;
+	}
+
+	/**
+	 * @return the controlledLinksList
+	 */
+	public List<ControlledLinks> getControlledLinksList() {
+		
+		//TODO - implement this compound object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Traffic_Lights_Value_Retrieval
+		
+		return controlledLinksList;
 	}
 	
 	
