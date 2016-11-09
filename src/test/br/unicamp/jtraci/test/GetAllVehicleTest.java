@@ -25,8 +25,8 @@ public class GetAllVehicleTest {
     private int port = 4011;
     private SumoSimulation sumoSimulation;
 
-//    private String pathMap = "/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg";
-    private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
+    private String pathMap = "/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg";
+    //private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
 
     @Before
     public void setUp(){
@@ -73,14 +73,14 @@ public class GetAllVehicleTest {
 
     @Test
     public void setTrafficLightState(){
-    	
-    	/** red light -> 'r' */                       
-    	/** red light w/o deceleration -> 'R' */   
-    	/** yellow light -> 'y' */                  
-    	/** yellow light w/out deceleration -> 'Y' */ 
-    	/** green light -> 'g' */                        
-    	/** green light w/out deceleration -> 'G' */     
-    	/** light off -> 'O' */                          
+
+        /** red light -> 'r' */
+        /** red light w/o deceleration -> 'R' */
+        /** yellow light -> 'y' */
+        /** yellow light w/out deceleration -> 'Y' */
+        /** green light -> 'g' */
+        /** green light w/out deceleration -> 'G' */
+        /** light off -> 'O' */
 
         List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
         trafficLights.get(0).getState();
@@ -93,6 +93,16 @@ public class GetAllVehicleTest {
 
         trafficLights.get(0).setState("rrrrrrrRrr");
         sumoSimulation.nextStep();
+
+    }
+
+
+    @Test
+    public void getControlledLinksFromTrafficLight(){
+
+        List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
+
+        trafficLights.get(0).getControlledLinks();
 
     }
 

@@ -13,6 +13,7 @@ package br.unicamp.jtraci.communication;
 
 
 import br.unicamp.jtraci.entities.Entity;
+import br.unicamp.jtraci.util.Constants;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -23,14 +24,16 @@ import java.util.List;
 public class CommandResult {
 
     private String id;
-
     private Command command;
-
     private byte[] result;
-
     private int varCount = 0;
-
     private boolean bVarCount = false;
+
+    private int commandID;
+    private byte varID;
+    private String objectID;
+
+    private int auxWindow;
 
     public Command getCommand() {
         return command;
@@ -100,9 +103,16 @@ public class CommandResult {
 
     public Object convertToEntityAttribute(Class<?> attributeType) {
 
+
         //Normally head length is 7, if is different maybe happened an error.
         //Head(Y) + Variable(4) + Vehicle ID(X) + Return type of the variable(4).
         int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
+        int headLen = 4;
+
+        if (isbVarCount()) {
+            varCount = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), this.getResult()[0], this.getResult()[0] + headLen)).getInt();
+            window += headLen;
+        }
 
         //Calculating information length.
         int infoLen = this.getResult().length - window;
@@ -129,6 +139,121 @@ public class CommandResult {
 
     }
 
+
+    public boolean verifyError(byte[] value){
+        return false;
+    }
+
+    public List<Object> convertCompoundAttribute(List<Class<?>> attributeTypes) {
+
+        if(!verifyError(getResult())) {
+
+            int window = this.getResult()[0];
+            int headLen = 4;
+
+            int infoLen = this.getResult()[window];
+            window++;
+
+            if (infoLen == 0) {
+                infoLen = ByteBuffer.wrap(Arrays.copyOfRange(getResult(), window, window + headLen)).getInt() - 6;
+                window += headLen;
+            } else
+                infoLen = infoLen - 2;
+
+            setCommandID(readUnsignedByte(getResult()[window]));
+            window++;
+
+            //Reading attribute value.
+            byte[] value = Arrays.copyOfRange(getResult(), window, window + infoLen);
+            window = 0;
+
+            setVarID(value[window]);
+            window++;
+
+            try {
+                int stringLen = command.convertStringUTF8Val(command.getObjectID()).size();
+                setObjectID(new String(Arrays.copyOfRange(value, window, window + stringLen), "US-ASCII"));
+                window += stringLen;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            checkType(value[window], Constants.TYPE_COMPOUND);
+            window++;
+            window+=headLen; // ignore data length
+
+            checkType(value[window], Constants.TYPE_INTEGER);
+            window++;
+
+            int countObjects =  ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + infoLen)).getInt();
+            window+=headLen;
+
+            List<Object> attributeValue = convertCompoundValue(value, attributeTypes, countObjects, window);
+
+
+            return attributeValue;
+
+        }
+        else
+            return null;
+
+
+    }
+
+    public List<Object> convertCompoundValue(byte[] value, List<Class<?>> attributeTypes, int countObjects, int window){
+
+        List<Object> objects = new ArrayList<Object>();
+        int headLen = 4;
+
+        for (int i = 0; i < countObjects; i++) {
+
+            for (Class<?> type : attributeTypes) {
+                if (Double.class.isAssignableFrom(type)) {
+                    checkType(value[window], Constants.TYPE_DOUBLE);
+                    window++;
+
+                } else if (Integer.class.isAssignableFrom(type)) {
+                    checkType(value[window], Constants.TYPE_INTEGER);
+                    window++;
+
+
+                } else if (String.class.isAssignableFrom(type)) {
+                    checkType(value[window], Constants.TYPE_STRING);
+                    window++;
+
+                } else if (List.class.isAssignableFrom(type)) {
+                    checkType(value[window], Constants.TYPE_INTEGER);
+                    window++;
+
+                    int countOfStringList = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + headLen)).getInt();
+                    window+=4;
+
+                    for (int j = 0; j < countOfStringList ; j++) {
+                        checkType(value[window], Constants.TYPE_STRINGLIST);
+                        window++;
+                        objects.add(convertStringListValue(value, window));
+                        window = auxWindow;
+                    }
+                }
+            }
+        }
+
+        return objects;
+    }
+
+
+    public boolean checkType(byte type, int typeID){
+        if (type != typeID)
+            return false;
+        else
+            return true;
+    }
+
+    public int readUnsignedByte(byte value)
+    {
+        return (int) ((value+ 256) % 256);
+    }
+
     public double convertDoubleValue(byte[] value) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(value);
         return byteBuffer.getDouble();
@@ -152,16 +277,17 @@ public class CommandResult {
         return valString;
     }
 
-    public List<String> convertStringListValue(byte[] value, int window){
+    public List<String>  convertStringListValue(byte[] value, int window){
+        auxWindow = 0;
         int headLen = 4;
-        int countObjects = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen)).getInt();
+        int countObjects = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + headLen)).getInt();
         window += headLen;
 
         List<String> objects = new ArrayList<String>();
 
         for (int i = 0; i < countObjects; i++) {
-            int infoLen = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen)).getInt();
-            byte[] byteObject = Arrays.copyOfRange(this.getResult(), window + headLen, window + headLen + infoLen);
+            int infoLen = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + headLen)).getInt();
+            byte[] byteObject = Arrays.copyOfRange(value, window + headLen, window + headLen + infoLen);
 
             String valString = null;
             try {
@@ -173,6 +299,8 @@ public class CommandResult {
             objects.add(valString);
             window += headLen + infoLen;
         }
+
+        auxWindow = window;
 
         return objects;
     }
@@ -213,4 +341,29 @@ public class CommandResult {
     public void setbVarCount(boolean bVarCount) {
         this.bVarCount = bVarCount;
     }
+
+    public int getCommandID() {
+        return commandID;
+    }
+
+    public void setCommandID(int commandID) {
+        this.commandID = commandID;
+    }
+
+    public byte getVarID() {
+        return varID;
+    }
+
+    public void setVarID(byte varID) {
+        this.varID = varID;
+    }
+
+    public String getObjectID() {
+        return objectID;
+    }
+
+    public void setObjectID(String objectID) {
+        this.objectID = objectID;
+    }
+
 }

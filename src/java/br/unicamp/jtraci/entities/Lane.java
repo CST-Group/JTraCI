@@ -48,6 +48,13 @@ public class Lane extends Entity {
 		
 	}
 
+	public Lane(String id){
+
+		setID(id);
+		laneReadQuery = new ReadQuery<Lane>(SumoSimulation.getInstance().getConnection(), Lane.class);
+
+	}
+
 	public String getEdgeId() {
 		
 		edgeId = (String)(laneReadQuery.getAttributeValue(Constants.VAR_LANE_EDGE_ID, ID, String.class));

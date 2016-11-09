@@ -11,8 +11,6 @@
 
 package br.unicamp.jtraci.query;
 
-import java.util.List;
-
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.CommandResult;
 import br.unicamp.jtraci.communication.SumoConnection;
@@ -21,6 +19,8 @@ import br.unicamp.jtraci.entities.Lane;
 import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.util.Constants;
+
+import java.util.List;
 
 public class ReadQuery<E extends Entity> {
 
@@ -52,17 +52,31 @@ public class ReadQuery<E extends Entity> {
 
 	}
 
-	public Object getAttributeValue(int varID, String objectID, Class<?> typeAttribute){
+	public Object getAttributeValue(int varID, String objectID, Class<?> attributeType){
 
 		int commandByte = chooseCommand();
 
 		Command command = new Command(commandByte, varID, objectID);
 		CommandResult commandResult = sumoConnection.sendCommand(command);
 
-		Object attribute = commandResult.convertToEntityAttribute(typeAttribute);
+		Object attribute = commandResult.convertToEntityAttribute(attributeType);
 
 		return attribute;
 	}
+
+
+	public List<Object> getCompoundAttributeValue(int varID, String objectID, List<Class<?>> attributeTypes){
+
+		int commandByte = chooseCommand();
+
+		Command command = new Command(commandByte, varID, objectID);
+		CommandResult commandResult = sumoConnection.sendCommand(command);
+
+		List<Object> objects = commandResult.convertCompoundAttribute(attributeTypes);
+
+		return objects;
+	}
+
 
 
 	private int chooseCommand(){
