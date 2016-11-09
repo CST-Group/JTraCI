@@ -3,6 +3,9 @@
  */
 package br.unicamp.jtraci.entities;
 
+import java.awt.geom.Path2D;
+import java.util.List;
+
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
@@ -41,6 +44,12 @@ public class Lane extends Entity {
 	
 	/** Returns the waiting time for all vehicles on the lane [s]  */
 	private Double waitingTime;
+	
+	/** Returns this lane's shape */
+	private Path2D shape;	
+	
+	/** Returns the list of ids of vehicles that were on this lane in the last simulation step */
+	private List<String> lastStepVehicleIds;
 	
 	public Lane(){
 		
@@ -118,6 +127,26 @@ public class Lane extends Entity {
 		
 		return waitingTime;
 		
+	}
+
+	/**
+	 * @return the shape
+	 */
+	public Path2D getShape() {
+		
+		//TODO - implement this shape object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Lane_Value_Retrieval
+		
+		return shape;
+	}
+
+	/**
+	 * @return the lastStepVehicleIds
+	 */
+	public List<String> getLastStepVehicleIds() {
+		
+		//TODO - implement this stringList object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Lane_Value_Retrieval
+		
+		return lastStepVehicleIds;
 	}
 	
 	

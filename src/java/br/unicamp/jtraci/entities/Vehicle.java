@@ -11,15 +11,14 @@
 
 package br.unicamp.jtraci.entities;
 
+import java.awt.geom.Point2D;
+import java.util.List;
+
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
 
-import java.util.List;
-
 public class Vehicle extends Entity {
-
-    private int postion; //REVIEW THE TYPE.
 
     /** Returns the speed of the named vehicle within the last step [m/s]; error value: -1001 */
     private double speed;
@@ -27,57 +26,19 @@ public class Vehicle extends Entity {
     /** Returns the angle of the named vehicle within the last step [°]; error value: -1001 */
     private double angle;
 
-    private String edgeID;
-
     /** Returns the id of the lane the named vehicle was at within the last step; error value: "" */
     private String laneID;
 
-    private int laneIndex;
-
-    private String typeID;
-
-    private String routeID;
-
-    private int routeIndex;
-
+    /** Returns the ids of the edges the vehicle's route is made of */
     private List<String> edges;
-
-    private byte[] color;
-
-    private double lanePostion;
-
-    private double distance;
-
-    private int signalState; //REVIEW THIS ATTRIBUTE.
-
-    private double co2;
-
-    private double co;
-
-    private double hc;
-
-    private double pmx;
-
-    private double nox;
-
-    private double fuelConsumption;
-
-    private double noiseEmission;
-
-    private double electricityConsumption;
+    
+    /** Returns the position(two doubles) of the named vehicle (center of the front bumper) within the last step [m,m]; error value: [-2^30, -2^30]. */
+    private Point2D position;
 
     private ReadQuery<Vehicle> vehicleReadQuery;
 
     public Vehicle(){
     	vehicleReadQuery = new ReadQuery<Vehicle>(SumoSimulation.getInstance().getConnection(), Vehicle.class);
-    }
-
-
-    public int getPostion() {
-
-        postion = (Integer) (vehicleReadQuery.getAttributeValue(Constants.VAR_POSITION, ID, Integer.class));
-
-        return postion;
     }
 
     public double getSpeed() {
@@ -104,8 +65,22 @@ public class Vehicle extends Entity {
 
     public List<String> getEdges() {
 
-        edges = (List<String>)(vehicleReadQuery.getAttributeValue(Constants.VAR_EDGES, getID(), List.class));
+        edges = (List<String>)(vehicleReadQuery.getAttributeValue(Constants.VAR_EDGES, ID, List.class));
 
         return edges;
     }
+
+
+	/**
+	 * @return the position
+	 */
+	public Point2D getPosition() {
+		
+		//TODO - implement this object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Vehicle_Value_Retrieval
+		
+		return position;
+	}
+    
+    
+    
 }
