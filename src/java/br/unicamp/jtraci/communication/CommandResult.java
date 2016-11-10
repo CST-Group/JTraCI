@@ -218,6 +218,20 @@ public class CommandResult {
 
 
                 } else if (String.class.isAssignableFrom(type)) {
+
+                    checkType(value[window], Constants.TYPE_INTEGER);
+                    window++;
+
+                    int countOfStringList = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + headLen)).getInt();
+                    window+=4;
+
+                    for (int j = 0; j < countOfStringList ; j++) {
+                        checkType(value[window], Constants.TYPE_STRING);
+                        window++;
+                        objects.add(convertStringValue(value));
+                        window = auxWindow;
+                    }
+
                     checkType(value[window], Constants.TYPE_STRING);
                     window++;
 

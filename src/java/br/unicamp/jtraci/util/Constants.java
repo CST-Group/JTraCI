@@ -69,6 +69,8 @@ public class Constants {
 
     public static final int VAR_TL_CONTROLLED_LINKS = 0x27;
 
+    public static final int VAR_TL_COMPLETE_DEFINITION_RYG = 0x2b;
+
 	public static final int VAR_TL_CURRENT_PHASE = 0x28;
 
 	public static final int VAR_TL_CURRENT_PROGRAM = 0x29;

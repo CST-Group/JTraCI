@@ -17,6 +17,8 @@ public class Logic extends Entity {
 	
 	/** */
 	private List<Phase> phases;
+	private int currentPhase;
+	private String subID;
 
 	/**
 	 * @return the phases

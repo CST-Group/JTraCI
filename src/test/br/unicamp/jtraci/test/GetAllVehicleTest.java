@@ -106,4 +106,13 @@ public class GetAllVehicleTest {
 
     }
 
+    @Test
+    public void getProgramDefinition(){
+
+        List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
+
+        trafficLights.get(0).getCompleteDefinition();
+
+    }
+
 }

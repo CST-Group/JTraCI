@@ -115,7 +115,13 @@ public class TrafficLight extends Entity {
      */
     public List<Logic> getCompleteDefinition() {
 
-        //TODO - implement this compound object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Traffic_Lights_Value_Retrieval
+
+        List<Class<?>> attributeTypes = new ArrayList<Class<?>>();
+        attributeTypes.add(String.class);
+        attributeTypes.add(Integer.class);
+
+        List<Object> compoundObjects = trafficLightReadQuery.getCompoundAttributeValue(Constants.VAR_TL_COMPLETE_DEFINITION_RYG, ID, attributeTypes);
+
 
         return completeDefinition;
     }
