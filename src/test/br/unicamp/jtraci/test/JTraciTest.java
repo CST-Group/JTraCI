@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class GetAllVehicleTest {
+public class JTraciTest {
 
     private int port = 4011;
     private SumoSimulation sumoSimulation;

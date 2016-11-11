@@ -7,8 +7,10 @@ import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.query.WriteQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
+import br.unicamp.jtraci.util.IgnoreParameter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -116,12 +118,49 @@ public class TrafficLight extends Entity {
     public List<Logic> getCompleteDefinition() {
 
 
-        List<Class<?>> attributeTypes = new ArrayList<Class<?>>();
+        List<Object> attributeTypes = new ArrayList<Object>();
         attributeTypes.add(String.class);
+        attributeTypes.add(new IgnoreParameter(10));
         attributeTypes.add(Integer.class);
+
+
+        List<Object> internalAttributeTypes = new ArrayList<Object>();
+        internalAttributeTypes.add(Integer.class);
+        internalAttributeTypes.add(Integer.class);
+        internalAttributeTypes.add(Integer.class);
+        internalAttributeTypes.add(String.class);
+        attributeTypes.add(internalAttributeTypes);
 
         List<Object> compoundObjects = trafficLightReadQuery.getCompoundAttributeValue(Constants.VAR_TL_COMPLETE_DEFINITION_RYG, ID, attributeTypes);
 
+        List<Logic> logics = new ArrayList<Logic>();
+
+        for (Object object : compoundObjects) {
+
+            Logic logic = new Logic();
+
+            for (Object attribute : (List<Object>) object) {
+                if (attribute instanceof Collection) {
+
+                    List<Object> phases = ((List<Object>) attribute);
+
+                    Phase phase = new Phase((Integer) ((List<Object>)phases.get(0)).get(0),
+                            (Integer) ((List<Object>)phases.get(0)).get(1),
+                            (Integer) ((List<Object>)phases.get(0)).get(2),
+                            (String) ((List<Object>)phases.get(0)).get(3));
+                    logic.getPhases().add(phase);
+
+                } else if (attribute instanceof String) {
+                    logic.setSubID((String) attribute);
+                } else if (attribute instanceof Integer) {
+                    logic.setCurrentPhase((Integer) attribute);
+                }
+            }
+
+            logics.add(logic);
+        }
+
+        completeDefinition = logics;
 
         return completeDefinition;
     }
@@ -129,7 +168,7 @@ public class TrafficLight extends Entity {
 
     public List<ControlledLink> getControlledLinks() {
 
-        List<Class<?>> attributeTypes = new ArrayList<Class<?>>();
+        List<Object> attributeTypes = new ArrayList<Object>();
         attributeTypes.add(List.class);
 
         List<Object> compoundObjects = trafficLightReadQuery.getCompoundAttributeValue(Constants.VAR_TL_CONTROLLED_LINKS, ID, attributeTypes);
@@ -137,8 +176,8 @@ public class TrafficLight extends Entity {
 
         for (Object item : compoundObjects) {
             controlledLinks.add(new ControlledLink(new Lane(((List<String>) item).get(0)),
-                                                   new Lane(((List<String>) item).get(2)),
-                                                   new Lane(((List<String>) item).get(1))));
+                    new Lane(((List<String>) item).get(2)),
+                    new Lane(((List<String>) item).get(1))));
         }
 
         return controlledLinks;

@@ -65,7 +65,7 @@ public class ReadQuery<E extends Entity> {
 	}
 
 
-	public List<Object> getCompoundAttributeValue(int varID, String objectID, List<Class<?>> attributeTypes){
+	public List<Object> getCompoundAttributeValue(int varID, String objectID, List<Object> attributeTypes){
 
 		int commandByte = chooseCommand();
 

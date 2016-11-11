@@ -14,11 +14,13 @@ package br.unicamp.jtraci.communication;
 
 import br.unicamp.jtraci.entities.Entity;
 import br.unicamp.jtraci.util.Constants;
+import br.unicamp.jtraci.util.IgnoreParameter;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class CommandResult {
@@ -144,7 +146,7 @@ public class CommandResult {
         return false;
     }
 
-    public List<Object> convertCompoundAttribute(List<Class<?>> attributeTypes) {
+    public List<Object> convertCompoundAttribute(List<Object> attributeTypes) {
 
         if(!verifyError(getResult())) {
 
@@ -188,7 +190,9 @@ public class CommandResult {
             int countObjects =  ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + infoLen)).getInt();
             window+=headLen;
 
-            List<Object> attributeValue = convertCompoundValue(value, attributeTypes, countObjects, window);
+            auxWindow = window;
+
+            List<Object> attributeValue = convertCompoundValue(value, attributeTypes, countObjects);
 
 
             return attributeValue;
@@ -200,56 +204,74 @@ public class CommandResult {
 
     }
 
-    public List<Object> convertCompoundValue(byte[] value, List<Class<?>> attributeTypes, int countObjects, int window){
+    public List<Object> convertCompoundValue(byte[] value, List<Object> attributeTypes, int countObjects){
 
         List<Object> objects = new ArrayList<Object>();
         int headLen = 4;
 
         for (int i = 0; i < countObjects; i++) {
 
-            for (Class<?> type : attributeTypes) {
-                if (Double.class.isAssignableFrom(type)) {
-                    checkType(value[window], Constants.TYPE_DOUBLE);
-                    window++;
+            List<Object> attributesObject = new ArrayList<Object>();
 
-                } else if (Integer.class.isAssignableFrom(type)) {
-                    checkType(value[window], Constants.TYPE_INTEGER);
-                    window++;
+            for (Object type : attributeTypes) {
 
+                if(type instanceof Class<?>){
 
-                } else if (String.class.isAssignableFrom(type)) {
+                    if (Double.class.isAssignableFrom((Class<?>)type)) {
+                        checkType(value[auxWindow], Constants.TYPE_DOUBLE);
+                        auxWindow++;
 
-                    checkType(value[window], Constants.TYPE_INTEGER);
-                    window++;
+                    } else if (Integer.class.isAssignableFrom((Class<?>)type)) {
+                        checkType(value[auxWindow], Constants.TYPE_INTEGER);
+                        auxWindow++;
+                        attributesObject.add(ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt());
+                        auxWindow+=headLen;
 
-                    int countOfStringList = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + headLen)).getInt();
-                    window+=4;
+                    } else if (String.class.isAssignableFrom((Class<?>)type)) {
+                        checkType(value[auxWindow], Constants.TYPE_STRING);
+                        auxWindow++;
 
-                    for (int j = 0; j < countOfStringList ; j++) {
-                        checkType(value[window], Constants.TYPE_STRING);
-                        window++;
-                        objects.add(convertStringValue(value));
-                        window = auxWindow;
+                        int infoLen = ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt();
+
+                        attributesObject.add(convertStringValue(ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen + infoLen)).array()));
+                        auxWindow+=headLen + infoLen;
+
+                    } else if (List.class.isAssignableFrom((Class<?>)type)) {
+                        checkType(value[auxWindow], Constants.TYPE_INTEGER);
+                        auxWindow++;
+
+                        int countOfStringList = ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt();
+                        auxWindow+=4;
+
+                        for (int j = 0; j < countOfStringList ; j++) {
+                            checkType(value[auxWindow], Constants.TYPE_STRINGLIST);
+                            auxWindow++;
+                            attributesObject.add(convertStringListValue(value, auxWindow));
+                        }
                     }
 
-                    checkType(value[window], Constants.TYPE_STRING);
-                    window++;
-
-                } else if (List.class.isAssignableFrom(type)) {
-                    checkType(value[window], Constants.TYPE_INTEGER);
-                    window++;
-
-                    int countOfStringList = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + headLen)).getInt();
-                    window+=4;
-
-                    for (int j = 0; j < countOfStringList ; j++) {
-                        checkType(value[window], Constants.TYPE_STRINGLIST);
-                        window++;
-                        objects.add(convertStringListValue(value, window));
-                        window = auxWindow;
-                    }
                 }
+                else if(type instanceof Collection)
+                {
+                    checkType(value[auxWindow], Constants.TYPE_INTEGER);
+                    auxWindow++;
+
+                    int compoundObjectCount =  ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt();
+                    auxWindow+=headLen;
+
+                    List<Object> objectsConverted = convertCompoundValue(value, (List<Object>)type, compoundObjectCount);
+
+                    attributesObject.add(objectsConverted);
+                }
+                else if(type instanceof IgnoreParameter)
+                {
+                    auxWindow = ((IgnoreParameter)type).sumRange(auxWindow);
+                }
+
+
             }
+
+            objects.add(attributesObject);
         }
 
         return objects;

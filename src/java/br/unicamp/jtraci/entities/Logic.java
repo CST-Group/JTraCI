@@ -3,6 +3,7 @@
  */
 package br.unicamp.jtraci.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,18 +16,46 @@ import java.util.List;
  */
 public class Logic extends Entity {
 	
-	/** */
 	private List<Phase> phases;
 	private int currentPhase;
 	private String subID;
 
-	/**
+
+	public Logic(){
+		phases = new ArrayList<Phase>();
+	}
+
+	public Logic(String subID, int currentPhase, List<Phase> phases){
+		setSubID(subID);
+		setCurrentPhase(currentPhase);
+		setPhases(phases);
+	}
+
+	/** */ /**
 	 * @return the phases
 	 */
 	public List<Phase> getPhases() {
 		return phases;
 	}
-	
-	
 
+
+	public void setPhases(List<Phase> phases) {
+		this.phases = phases;
+	}
+
+	public int getCurrentPhase() {
+		return currentPhase;
+	}
+
+	public void setCurrentPhase(int currentPhase) {
+		this.currentPhase = currentPhase;
+	}
+
+	public String getSubID() {
+		return subID;
+	}
+
+	public void setSubID(String subID) {
+		this.subID = subID;
+	}
 }
