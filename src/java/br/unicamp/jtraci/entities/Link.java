@@ -1,39 +1,29 @@
-/**
- * 
- */
 package br.unicamp.jtraci.entities;
 
 /**
- * @author andre
- * 
- * Structure:
- * 
- * number of controlled links [integer] 	link 0  [stringlist]	... 	link n-1 [stringlist] 
- * 
- * Empty strings indicate missing lanes. 
- *
+ * Created by Du on 07/11/16.
  */
-public class Link extends Entity {
-	
-	/** the lane which is incoming into the junction */
-	private Lane incomingLane;
-	
-	/** the lane which is outgoing from the junction */
-	private Lane outgoingLane;
-	
-	/**  the lane across the junction (junction-internal) */
-	private Lane acrossLane;
+public class Link extends Entity{
+    private final Lane incomingLane;
+    private final Lane acrossLane;
+    private final Lane outgoingLane;
 
-	/**
-	 * @return the incomingLane
-	 */
-	public Lane getIncomingLane() {
-		
-		//TODO - implement this compound object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Traffic_Lights_Value_Retrieval
-		
-		return incomingLane;
-	}
-	
-	
+    public Link(Lane incomingLane, Lane acrossLane, Lane outgoingLane) {
 
+       this.incomingLane = incomingLane;
+       this.acrossLane = acrossLane;
+       this.outgoingLane = outgoingLane;
+    }
+
+    public Lane getIncomingLane() {
+        return incomingLane;
+    }
+
+    public Lane getAcrossLane() {
+        return acrossLane;
+    }
+
+    public Lane getOutgoingLane() {
+        return outgoingLane;
+    }
 }

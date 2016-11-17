@@ -3,8 +3,6 @@
  */
 package br.unicamp.jtraci.entities;
 
-import java.util.List;
-
 /**
  * @author andre
  * 
@@ -17,19 +15,23 @@ import java.util.List;
  */
 public class ControlledLinks extends Entity {
 	
-	/** Controlled links s*/
-	private List<Link> links;
+	private Link[][] links;
 
-	/**
+
+	public ControlledLinks(Link[][] links){
+		setLinks(links);
+	}
+
+	/** Controlled links s*/ /**
 	 * @return the links
 	 */
-	public List<Link> getLinks() {
-		
-		//TODO - implement this compound object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Traffic_Lights_Value_Retrieval
+	public Link[][] getLinks() {
 		
 		return links;
 	}
-	
-	
 
+
+	public void setLinks(Link[][] links) {
+		this.links = links;
+	}
 }

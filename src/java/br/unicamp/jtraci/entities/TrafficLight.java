@@ -59,6 +59,10 @@ public class TrafficLight extends Entity {
      */
     private List<Logic> completeDefinition;
 
+
+    private ControlledLinks controlledLinks;
+
+
     public TrafficLight() {
 
         trafficLightReadQuery = new ReadQuery<TrafficLight>(SumoSimulation.getInstance().getConnection(), TrafficLight.class);
@@ -166,19 +170,28 @@ public class TrafficLight extends Entity {
     }
 
 
-    public List<ControlledLink> getControlledLinks() {
+    public ControlledLinks getControlledLinks() {
 
         List<Object> attributeTypes = new ArrayList<Object>();
         attributeTypes.add(List.class);
 
         List<Object> compoundObjects = trafficLightReadQuery.getCompoundAttributeValue(Constants.VAR_TL_CONTROLLED_LINKS, ID, attributeTypes);
-        List<ControlledLink> controlledLinks = new ArrayList<ControlledLink>();
 
-        for (Object item : compoundObjects) {
-            controlledLinks.add(new ControlledLink(new Lane(((List<String>) item).get(0)),
-                    new Lane(((List<String>) item).get(2)),
-                    new Lane(((List<String>) item).get(1))));
+        Link [][] links = new Link[compoundObjects.size()][];
+
+        for (int i = 0; i < compoundObjects.size(); i++) {
+
+            links[i] = new Link[((ArrayList)compoundObjects.get(i)).size()];
+            for (int j = 0; j < ((ArrayList)compoundObjects.get(i)).size() ; j++) {
+                links[i][j] = new Link(new Lane((String)((ArrayList)(((ArrayList) compoundObjects.get(i)).get(j))).get(0)),
+                                       new Lane((String)((ArrayList)(((ArrayList) compoundObjects.get(i)).get(j))).get(2)),
+                                       new Lane((String)((ArrayList)(((ArrayList) compoundObjects.get(i)).get(j))).get(1)));
+
+            }
+
         }
+
+        controlledLinks = new ControlledLinks(links);
 
         return controlledLinks;
     }
