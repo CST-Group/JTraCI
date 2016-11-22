@@ -140,8 +140,8 @@ public class Lane extends Entity {
 	 * @return the shape
 	 */
 	public Path2D getShape() {
-		
-		//TODO - implement this shape object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Lane_Value_Retrieval
+
+        shape = (Path2D)(laneReadQuery.getAttributeValue(Constants.VAR_LANE_SHAPE, ID, Path2D.class));
 		
 		return shape;
 	}

@@ -38,7 +38,7 @@ public class JTraciTest {
     }
 
     @Test
-    public void GetAllVehicles(){
+    public void getAllVehicles(){
 
         List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
 
@@ -47,16 +47,15 @@ public class JTraciTest {
         vehicles.get(0).getAngle();
         vehicles.get(0).getLaneID();
 
-        List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
-                
-        trafficLights.get(0).getState();
-        trafficLights.get(0).getCurrentPhaseDuration();
-        trafficLights.get(0).getCurrentPhase();
-        trafficLights.get(0).getCurrentProgram();
-        trafficLights.get(0).getAssumedTimeOfNextSwitch();        
-        
+        sumoSimulation.close();
+    }
+
+    @Test
+    public void getAllLanes(){
+
         List<Lane> lanes = sumoSimulation.getAllLanes();
-        
+
+        lanes.get(0).getShape();
         lanes.get(0).getEdgeId();
         lanes.get(0).getLength();
         lanes.get(0).getVMax();
@@ -66,9 +65,18 @@ public class JTraciTest {
         lanes.get(0).getLastStepOccupancy();
         lanes.get(0).getlastStepMeanVehicleLength();
         lanes.get(0).getWaitingTime();
-        
-        sumoSimulation.close();
 
+    }
+
+    @Test
+    public void getAllTrafficLights(){
+        List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
+
+        trafficLights.get(0).getState();
+        trafficLights.get(0).getCurrentPhaseDuration();
+        trafficLights.get(0).getCurrentPhase();
+        trafficLights.get(0).getCurrentProgram();
+        trafficLights.get(0).getAssumedTimeOfNextSwitch();
     }
 
     @Test
@@ -95,7 +103,6 @@ public class JTraciTest {
         sumoSimulation.nextStep();
 
     }
-
 
     @Test
     public void getControlledLinksFromTrafficLight(){

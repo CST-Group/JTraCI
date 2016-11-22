@@ -16,6 +16,7 @@ import br.unicamp.jtraci.entities.Entity;
 import br.unicamp.jtraci.util.Constants;
 import br.unicamp.jtraci.util.IgnoreParameter;
 
+import java.awt.geom.Path2D;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -105,7 +106,6 @@ public class CommandResult {
 
     public Object convertToEntityAttribute(Class<?> attributeType) {
 
-
         //Normally head length is 7, if is different maybe happened an error.
         //Head(Y) + Variable(4) + Vehicle ID(X) + Return type of the variable(4).
         int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
@@ -134,7 +134,9 @@ public class CommandResult {
         } else if (String.class.isAssignableFrom(attributeType)) {
             objectConverted = convertStringValue(value);
         } else if (List.class.isAssignableFrom(attributeType)) {
-            objectConverted = convertStringListValue(value, window);
+            objectConverted = convertStringListValue(this.getResult(), window);
+        } else if (Path2D.class.isAssignableFrom(attributeType)) {
+            objectConverted = convertShapeValue(value);
         }
 
         return objectConverted;
@@ -142,13 +144,13 @@ public class CommandResult {
     }
 
 
-    public boolean verifyError(byte[] value){
+    public boolean verifyError(byte[] value) {
         return false;
     }
 
     public List<Object> convertCompoundAttribute(List<Object> attributeTypes) {
 
-        if(!verifyError(getResult())) {
+        if (!verifyError(getResult())) {
 
             int window = this.getResult()[0];
             int headLen = 4;
@@ -182,13 +184,13 @@ public class CommandResult {
 
             checkType(value[window], Constants.TYPE_COMPOUND);
             window++;
-            window+=headLen; // ignore data length
+            window += headLen; // ignore data length
 
             checkType(value[window], Constants.TYPE_INTEGER);
             window++;
 
-            int countObjects =  ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + infoLen)).getInt();
-            window+=headLen;
+            int countObjects = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + infoLen)).getInt();
+            window += headLen;
 
             auxWindow = window;
 
@@ -197,14 +199,13 @@ public class CommandResult {
 
             return attributeValue;
 
-        }
-        else
+        } else
             return null;
 
 
     }
 
-    public List<Object> convertCompoundValue(byte[] value, List<Object> attributeTypes, int countObjects){
+    public List<Object> convertCompoundValue(byte[] value, List<Object> attributeTypes, int countObjects) {
 
         List<Object> objects = new ArrayList<Object>();
         int headLen = 4;
@@ -215,57 +216,53 @@ public class CommandResult {
 
             for (Object type : attributeTypes) {
 
-                if(type instanceof Class<?>){
+                if (type instanceof Class<?>) {
 
-                    if (Double.class.isAssignableFrom((Class<?>)type)) {
+                    if (Double.class.isAssignableFrom((Class<?>) type)) {
                         checkType(value[auxWindow], Constants.TYPE_DOUBLE);
                         auxWindow++;
 
-                    } else if (Integer.class.isAssignableFrom((Class<?>)type)) {
+                    } else if (Integer.class.isAssignableFrom((Class<?>) type)) {
                         checkType(value[auxWindow], Constants.TYPE_INTEGER);
                         auxWindow++;
                         attributesObject.add(ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt());
-                        auxWindow+=headLen;
+                        auxWindow += headLen;
 
-                    } else if (String.class.isAssignableFrom((Class<?>)type)) {
+                    } else if (String.class.isAssignableFrom((Class<?>) type)) {
                         checkType(value[auxWindow], Constants.TYPE_STRING);
                         auxWindow++;
 
                         int infoLen = ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt();
 
                         attributesObject.add(convertStringValue(ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen + infoLen)).array()));
-                        auxWindow+=headLen + infoLen;
+                        auxWindow += headLen + infoLen;
 
-                    } else if (List.class.isAssignableFrom((Class<?>)type)) {
+                    } else if (List.class.isAssignableFrom((Class<?>) type)) {
                         checkType(value[auxWindow], Constants.TYPE_INTEGER);
                         auxWindow++;
 
                         int countOfStringList = ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt();
-                        auxWindow+=4;
+                        auxWindow += 4;
 
-                        for (int j = 0; j < countOfStringList ; j++) {
+                        for (int j = 0; j < countOfStringList; j++) {
                             checkType(value[auxWindow], Constants.TYPE_STRINGLIST);
                             auxWindow++;
                             attributesObject.add(convertStringListValue(value, auxWindow));
                         }
                     }
 
-                }
-                else if(type instanceof Collection)
-                {
+                } else if (type instanceof Collection) {
                     checkType(value[auxWindow], Constants.TYPE_INTEGER);
                     auxWindow++;
 
-                    int compoundObjectCount =  ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt();
-                    auxWindow+=headLen;
+                    int compoundObjectCount = ByteBuffer.wrap(Arrays.copyOfRange(value, auxWindow, auxWindow + headLen)).getInt();
+                    auxWindow += headLen;
 
-                    List<Object> objectsConverted = convertCompoundValue(value, (List<Object>)type, compoundObjectCount);
+                    List<Object> objectsConverted = convertCompoundValue(value, (List<Object>) type, compoundObjectCount);
 
                     attributesObject.add(objectsConverted);
-                }
-                else if(type instanceof IgnoreParameter)
-                {
-                    auxWindow = ((IgnoreParameter)type).sumRange(auxWindow);
+                } else if (type instanceof IgnoreParameter) {
+                    auxWindow = ((IgnoreParameter) type).sumRange(auxWindow);
                 }
 
 
@@ -278,16 +275,43 @@ public class CommandResult {
     }
 
 
-    public boolean checkType(byte type, int typeID){
+    public boolean checkType(byte type, int typeID) {
         if (type != typeID)
             return false;
         else
             return true;
     }
 
-    public int readUnsignedByte(byte value)
-    {
-        return (int) ((value+ 256) % 256);
+    public int readUnsignedByte(byte value) {
+        return (int) ((value + 256) % 256);
+    }
+
+
+    public Object convertShapeValue(byte[] value) {
+        int window = 0;
+        int doubleHead = 8;
+
+        int countObjects = value[window];
+        window++;
+
+        Path2D.Double shape = new Path2D.Double();
+
+        for (int i = 0; i < countObjects; ++i) {
+
+            double x = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + doubleHead)).getDouble();
+            window+=doubleHead;
+
+            double y = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + doubleHead)).getDouble();
+            window+=doubleHead;
+
+            if (i == 0) {
+                shape.moveTo(x, y);
+            } else {
+                shape.lineTo(x, y);
+            }
+        }
+
+        return shape;
     }
 
     public double convertDoubleValue(byte[] value) {
@@ -313,7 +337,7 @@ public class CommandResult {
         return valString;
     }
 
-    public List<String>  convertStringListValue(byte[] value, int window){
+    public List<String> convertStringListValue(byte[] value, int window) {
         auxWindow = 0;
         int headLen = 4;
         int countObjects = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + headLen)).getInt();

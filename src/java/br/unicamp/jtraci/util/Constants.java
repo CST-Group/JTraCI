@@ -94,6 +94,8 @@ public class Constants {
 	public static final int VAR_LANE_LAST_STEP_MEAN_VEHICLE_LENGTH = 0x15;
 
 	public static final int VAR_LANE_WAITING_TIME = 0x7a;
+
+    public static final int VAR_LANE_SHAPE = 0x4e;
 	
 	/** command: close sumo */
 	public static final int CMD_CLOSE = 0x7F;
