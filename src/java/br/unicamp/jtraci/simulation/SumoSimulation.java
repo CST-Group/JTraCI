@@ -11,11 +11,6 @@
 
 package br.unicamp.jtraci.simulation;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
-
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.SumoConnection;
 import br.unicamp.jtraci.entities.Lane;
@@ -23,6 +18,11 @@ import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.util.Constants;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SumoSimulation {
@@ -99,18 +99,16 @@ public class SumoSimulation {
     	
         List<Command> commands = new ArrayList<Command>();
 
-
         Command command0 = new Command(Constants.CMD_SIMSTEP2);
         command0.addContent(((++currentStep) * 1000));
         commands.add(command0);
-
 
         sumoConnection.sendCommandList(commands);
 
     }
 
 
-    public List<Vehicle> getAllVehicles(){
+    public synchronized List<Vehicle> getAllVehicles(){
 
         ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoConnection, Vehicle.class);
 
@@ -118,19 +116,19 @@ public class SumoSimulation {
 
     }
 
-	public SumoConnection getConnection() {
+	public synchronized SumoConnection getConnection() {
 		
 		return sumoConnection;
 	}
 
-	public List<TrafficLight> getAllTrafficLights() {
+	public synchronized List<TrafficLight> getAllTrafficLights() {
 		
 		ReadQuery<TrafficLight> trafficLightReadQuery = new ReadQuery<TrafficLight>(sumoConnection, TrafficLight.class);
 
         return trafficLightReadQuery.getAll();
 	}
 
-	public List<Lane> getAllLanes() {
+	public synchronized List<Lane> getAllLanes() {
 		
 		ReadQuery<Lane> laneReadQuery = new ReadQuery<Lane>(sumoConnection, Lane.class);
 

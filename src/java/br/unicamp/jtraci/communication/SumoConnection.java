@@ -69,7 +69,7 @@ public class SumoConnection {
         return isConnected;
     }
 
-    public CommandResult sendCommand(Command command) {
+    public synchronized CommandResult sendCommand(Command command) {
 
         CommandResult commandResult = null;
 
@@ -95,7 +95,7 @@ public class SumoConnection {
         return commandResult;
     }
 
-    public List<CommandResult> sendCommandList(List<Command> commands) {
+    public synchronized List<CommandResult> sendCommandList(List<Command> commands) {
 
         int totalLen = Integer.SIZE / 8;
 
@@ -124,7 +124,7 @@ public class SumoConnection {
     }
 
 
-    public CommandResult readResultCommand(Command command) {
+    public synchronized CommandResult readResultCommand(Command command) {
 
         CommandResult commandResult = null;
 
@@ -144,7 +144,7 @@ public class SumoConnection {
     }
 
 
-    public List<CommandResult> readResultCommandList(List<Command> executedCommands) {
+    public synchronized List<CommandResult> readResultCommandList(List<Command> executedCommands) {
         List<CommandResult> commandResults = new ArrayList<CommandResult>();
 
         for (int i = 0; i < executedCommands.size() ; i++) {

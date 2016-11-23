@@ -148,11 +148,14 @@ public class TrafficLight extends Entity {
 
                     List<Object> phases = ((List<Object>) attribute);
 
-                    Phase phase = new Phase((Integer) ((List<Object>)phases.get(0)).get(0),
-                            (Integer) ((List<Object>)phases.get(0)).get(1),
-                            (Integer) ((List<Object>)phases.get(0)).get(2),
-                            (String) ((List<Object>)phases.get(0)).get(3));
-                    logic.getPhases().add(phase);
+                    for (int i = 0; i < phases.size(); i++) {
+                        Phase phase = new Phase((Integer) ((List<Object>)phases.get(i)).get(0),
+                                (Integer) ((List<Object>)phases.get(i)).get(1),
+                                (Integer) ((List<Object>)phases.get(i)).get(2),
+                                (String) ((List<Object>)phases.get(i)).get(3));
+                        logic.getPhases().add(phase);
+                    }
+
 
                 } else if (attribute instanceof String) {
                     logic.setSubID((String) attribute);

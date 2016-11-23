@@ -24,7 +24,7 @@ public class WriteQuery<E extends Entity> {
 
     }
 
-    public void setAttributeValue(int varID, String objectID, byte typeAttribute, Object value){
+    public synchronized void setAttributeValue(int varID, String objectID, byte typeAttribute, Object value){
 
         int commandByte = chooseCommand();
 
@@ -38,7 +38,7 @@ public class WriteQuery<E extends Entity> {
     }
 
 
-    private int chooseCommand(){
+    private synchronized int chooseCommand(){
 
         int command = 0;
 

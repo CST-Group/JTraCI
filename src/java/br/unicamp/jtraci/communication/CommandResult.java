@@ -55,8 +55,14 @@ public class CommandResult {
             if (Entity.class.isAssignableFrom(entityType)) {
 
                 //8 = Context Domain(4) + Object ID(4)
-                int window = this.getResult()[0] + 8;
+                int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
                 int headLen = 4;
+
+                int infoTest = this.getResult()[this.getResult()[0]];
+
+                if (infoTest == 0) {
+                    window += headLen;
+                }
 
                 List<Entity> entities = new ArrayList<Entity>();
 
@@ -162,7 +168,7 @@ public class CommandResult {
                 infoLen = ByteBuffer.wrap(Arrays.copyOfRange(getResult(), window, window + headLen)).getInt() - 6;
                 window += headLen;
             } else
-                infoLen = infoLen - 2;
+                infoLen = getResult().length - window;
 
             setCommandID(readUnsignedByte(getResult()[window]));
             window++;

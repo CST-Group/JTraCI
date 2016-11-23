@@ -33,7 +33,7 @@ public class JTraciTest {
         sumoSimulation = SumoSimulation.getInstance();
         sumoSimulation.runSumoGui(pathMap, port);
 
-        for(int i=0; i<60; i++)
+        for(int i=0; i<172; i++)
             sumoSimulation.nextStep();
     }
 
@@ -70,6 +70,7 @@ public class JTraciTest {
 
     @Test
     public void getAllTrafficLights(){
+
         List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
 
         trafficLights.get(0).getState();
@@ -77,6 +78,9 @@ public class JTraciTest {
         trafficLights.get(0).getCurrentPhase();
         trafficLights.get(0).getCurrentProgram();
         trafficLights.get(0).getAssumedTimeOfNextSwitch();
+        trafficLights.get(0).getCompleteDefinition();
+        trafficLights.get(0).getControlledLinks();
+
     }
 
     @Test
@@ -104,22 +108,5 @@ public class JTraciTest {
 
     }
 
-    @Test
-    public void getControlledLinksFromTrafficLight(){
-
-        List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
-
-        trafficLights.get(0).getControlledLinks();
-
-    }
-
-    @Test
-    public void getProgramDefinition(){
-
-        List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
-
-        trafficLights.get(0).getCompleteDefinition();
-
-    }
 
 }

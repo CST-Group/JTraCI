@@ -24,19 +24,19 @@ import java.util.List;
 
 public class ReadQuery<E extends Entity> {
 
-	private SumoConnection sumoConnection;
+	private  SumoConnection sumoConnection;
 
 	private Class<E> classE;
 
 	private boolean bVarCount = false;
 
-	public ReadQuery(SumoConnection sumoConnection, Class<E> classE){
+	public  ReadQuery(SumoConnection sumoConnection, Class<E> classE){
 		this.sumoConnection = sumoConnection;
 		this.classE = classE;
 
 	}
 
-	public List<E> getAll(){
+	public synchronized List<E> getAll(){
 
 		int commandByte = chooseCommand();
 		int varID = Constants.ID_LIST;
@@ -52,7 +52,7 @@ public class ReadQuery<E extends Entity> {
 
 	}
 
-	public Object getAttributeValue(int varID, String objectID, Class<?> attributeType){
+	public synchronized Object getAttributeValue(int varID, String objectID, Class<?> attributeType){
 
 		int commandByte = chooseCommand();
 
@@ -65,7 +65,7 @@ public class ReadQuery<E extends Entity> {
 	}
 
 
-	public List<Object> getCompoundAttributeValue(int varID, String objectID, List<Object> attributeTypes){
+	public synchronized List<Object> getCompoundAttributeValue(int varID, String objectID, List<Object> attributeTypes){
 
 		int commandByte = chooseCommand();
 
@@ -79,7 +79,7 @@ public class ReadQuery<E extends Entity> {
 
 
 
-	private int chooseCommand(){
+	private synchronized int chooseCommand(){
 
 		int command = 0;
 
