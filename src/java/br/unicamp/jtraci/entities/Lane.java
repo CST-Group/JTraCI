@@ -104,6 +104,16 @@ public class Lane extends Entity {
 		
 	}
 
+
+	/**
+	 * @return the lastStepVehicleIds
+	 */
+	public List<String> getLastStepVehicleIds(){
+		lastStepVehicleIds = (List<String>)(laneReadQuery.getAttributeValue(Constants.VAR_LANE_LAST_STEP_VEHICLE_IDS, ID, List.class));
+
+		return lastStepVehicleIds;
+	}
+
 	public Double getLastStepMeanSpeed() {
 		
 		lastStepMeanSpeed = (Double)(laneReadQuery.getAttributeValue(Constants.VAR_LANE_LAST_STEP_MEAN_SPEED, ID, Double.class));
@@ -146,15 +156,7 @@ public class Lane extends Entity {
 		return shape;
 	}
 
-	/**
-	 * @return the lastStepVehicleIds
-	 */
-	public List<String> getLastStepVehicleIds() {
-		
-		//TODO - implement this stringList object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Lane_Value_Retrieval
-		
-		return lastStepVehicleIds;
-	}
+
 	
 	
 

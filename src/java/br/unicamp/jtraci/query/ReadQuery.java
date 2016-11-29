@@ -28,12 +28,9 @@ public class ReadQuery<E extends Entity> {
 
 	private Class<E> classE;
 
-	private boolean bVarCount = false;
-
 	public  ReadQuery(SumoConnection sumoConnection, Class<E> classE){
 		this.sumoConnection = sumoConnection;
 		this.classE = classE;
-
 	}
 
 	public synchronized List<E> getAll(){
@@ -44,7 +41,6 @@ public class ReadQuery<E extends Entity> {
 
 		Command command = new Command(commandByte, varID, objectID);
 		CommandResult commandResult = sumoConnection.sendCommand(command);
-		commandResult.setbVarCount(bVarCount);
 
 		List<E> entities = (List<E>) commandResult.convertToEntity(this.classE);
 
@@ -86,20 +82,18 @@ public class ReadQuery<E extends Entity> {
 		if(this.classE.isAssignableFrom(Vehicle.class)){
 			
 			command = Constants.CMD_GET_VEHICLE_VARIABLE;
-			bVarCount = false;
 
 		} else if(this.classE.isAssignableFrom(TrafficLight.class)){
 			
 			command = Constants.CMD_GET_TRAFFIC_LIGHT_VARIABLE;
-			bVarCount = false;
 
 		}  else if(this.classE.isAssignableFrom(Lane.class)){
 			
 			command = Constants.CMD_GET_LANE_VARIABLE;
-			bVarCount = true;
 		}
 
 		return command;
 	}
+
 
 }

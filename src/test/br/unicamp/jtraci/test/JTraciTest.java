@@ -22,7 +22,7 @@ import java.util.List;
 
 public class JTraciTest {
 
-    private int port = 4011;
+    private int port = 4012;
     private SumoSimulation sumoSimulation;
 
     private String pathMap = "/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg";
@@ -47,7 +47,6 @@ public class JTraciTest {
         vehicles.get(0).getAngle();
         vehicles.get(0).getLaneID();
 
-        sumoSimulation.close();
     }
 
     @Test
@@ -55,6 +54,7 @@ public class JTraciTest {
 
         List<Lane> lanes = sumoSimulation.getAllLanes();
 
+        lanes.get(0).getLastStepVehicleIds();
         lanes.get(0).getShape();
         lanes.get(0).getEdgeId();
         lanes.get(0).getLength();

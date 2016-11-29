@@ -30,7 +30,6 @@ public class CommandResult {
     private Command command;
     private byte[] result;
     private int varCount = 0;
-    private boolean bVarCount = false;
 
     private int commandID;
     private byte varID;
@@ -65,11 +64,6 @@ public class CommandResult {
                 }
 
                 List<Entity> entities = new ArrayList<Entity>();
-
-                if (isbVarCount()) {
-                    varCount = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), this.getResult()[0], this.getResult()[0] + headLen)).getInt();
-                    window += headLen;
-                }
 
                 //Finding out amount of objects.
                 ByteBuffer wrapped = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), window, window + headLen));
@@ -117,8 +111,9 @@ public class CommandResult {
         int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
         int headLen = 4;
 
-        if (isbVarCount()) {
-            varCount = ByteBuffer.wrap(Arrays.copyOfRange(this.getResult(), this.getResult()[0], this.getResult()[0] + headLen)).getInt();
+        int infoTest = this.getResult()[this.getResult()[0]];
+
+        if (infoTest == 0) {
             window += headLen;
         }
 
@@ -398,14 +393,6 @@ public class CommandResult {
 
     public void setVarCount(int varCount) {
         this.varCount = varCount;
-    }
-
-    public boolean isbVarCount() {
-        return bVarCount;
-    }
-
-    public void setbVarCount(boolean bVarCount) {
-        this.bVarCount = bVarCount;
     }
 
     public int getCommandID() {

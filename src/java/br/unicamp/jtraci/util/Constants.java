@@ -89,6 +89,8 @@ public class Constants {
 
 	public static final int VAR_LANE_LAST_STEP_MEAN_SPEED = 0x11;
 
+    public static final int VAR_LANE_LAST_STEP_VEHICLE_IDS = 0x12;
+
 	public static final int VAR_LANE_LAST_STEP_OCCUPANCY = 0x13;
 
 	public static final int VAR_LANE_LAST_STEP_MEAN_VEHICLE_LENGTH = 0x15;
