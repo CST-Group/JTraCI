@@ -17,6 +17,7 @@ import br.unicamp.jtraci.util.Constants;
 import br.unicamp.jtraci.util.IgnoreParameter;
 
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -54,14 +55,10 @@ public class CommandResult {
             if (Entity.class.isAssignableFrom(entityType)) {
 
                 //8 = Context Domain(4) + Object ID(4)
-                int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
+                int window = 0;
                 int headLen = 4;
 
-                int infoTest = this.getResult()[this.getResult()[0]];
-
-                if (infoTest == 0) {
-                    window += headLen;
-                }
+                window = verifyError(this.getResult());
 
                 List<Entity> entities = new ArrayList<Entity>();
 
@@ -106,15 +103,11 @@ public class CommandResult {
 
     public Object convertToEntityAttribute(Class<?> attributeType) {
 
-        //Normally head length is 7, if is different maybe happened an error.
-        //Head(Y) + Variable(4) + Vehicle ID(X) + Return type of the variable(4).
-        int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
-        int headLen = 4;
-
-        int infoTest = this.getResult()[this.getResult()[0]];
-
-        if (infoTest == 0) {
-            window += headLen;
+        int window = 0;
+        try {
+            window = verifyError(this.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         //Calculating information length.
@@ -138,6 +131,8 @@ public class CommandResult {
             objectConverted = convertStringListValue(this.getResult(), window);
         } else if (Path2D.class.isAssignableFrom(attributeType)) {
             objectConverted = convertShapeValue(value);
+        } else if(Point2D.class.isAssignableFrom(attributeType)){
+            objectConverted = convertPoint2Dvalue(value);
         }
 
         return objectConverted;
@@ -145,13 +140,31 @@ public class CommandResult {
     }
 
 
-    public boolean verifyError(byte[] value) {
-        return false;
+    public int verifyError(byte[] value) throws Exception {
+
+        //Normally head length is 7, if is different maybe happened an error.
+        //Head(Y) + Variable(4) + Vehicle ID(X) + Return type of the variable(4).
+        int window = this.getResult()[0] + 4 + getCommand().convertStringUTF8Val(getCommand().getObjectID()).size();
+        int headLen = 4;
+
+        try {
+            int infoTest = this.getResult()[this.getResult()[0]];
+
+            if (infoTest == 0) {
+                window += headLen;
+            }
+            return window;
+        }
+        catch (Exception ex){
+            ex = new Exception(convertStringValue(this.getResult()));
+            ex.printStackTrace();
+            throw ex;
+        }
+
     }
 
     public List<Object> convertCompoundAttribute(List<Object> attributeTypes) {
 
-        if (!verifyError(getResult())) {
 
             int window = this.getResult()[0];
             int headLen = 4;
@@ -200,8 +213,7 @@ public class CommandResult {
 
             return attributeValue;
 
-        } else
-            return null;
+
 
 
     }
@@ -287,6 +299,19 @@ public class CommandResult {
         return (int) ((value + 256) % 256);
     }
 
+    public Object convertPoint2Dvalue(byte[] value) {
+        int window = 0;
+        int doubleHead = 8;
+
+        double x = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + doubleHead)).getDouble();
+        window+=doubleHead;
+
+        double y = ByteBuffer.wrap(Arrays.copyOfRange(value, window, window + doubleHead)).getDouble();
+
+        Point2D point2D = new Point2D.Double(x, y);
+
+        return point2D;
+    }
 
     public Object convertShapeValue(byte[] value) {
         int window = 0;

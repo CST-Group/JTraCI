@@ -12,6 +12,7 @@
 package br.unicamp.jtraci.entities;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.unicamp.jtraci.query.ReadQuery;
@@ -75,8 +76,8 @@ public class Vehicle extends Entity {
 	 * @return the position
 	 */
 	public Point2D getPosition() {
-		
-		//TODO - implement this object according to structure in http://www.sumo.dlr.de/wiki/TraCI/Vehicle_Value_Retrieval
+
+        position = (Point2D)vehicleReadQuery.getAttributeValue(Constants.VAR_POSITION, ID, Point2D.class);
 		
 		return position;
 	}

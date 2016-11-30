@@ -22,19 +22,31 @@ import java.util.List;
 
 public class JTraciTest {
 
-    private int port = 4012;
-    private SumoSimulation sumoSimulation;
+    private int port = 4011;
+    private static SumoSimulation sumoSimulation;
 
-    private String pathMap = "/Users/Du/Documents/Faculdades/Unicamp/Projeto/maps/twinT/twinT.sumocfg";
+    private String pathMap = "/Users/du/Repository/maps/twinT/twinT.sumocfg";
     //private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
+
+    private static boolean setUpIsDone = false;
+
 
     @Before
     public void setUp(){
+
+        if (setUpIsDone) {
+            return;
+        }
+
         sumoSimulation = SumoSimulation.getInstance();
         sumoSimulation.runSumoGui(pathMap, port);
 
-        for(int i=0; i<172; i++)
+        for (int i = 0; i < 172; i++)
             sumoSimulation.nextStep();
+
+
+        setUpIsDone = true;
+
     }
 
     @Test
@@ -42,6 +54,7 @@ public class JTraciTest {
 
         List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
 
+        vehicles.get(0).getPosition();
         vehicles.get(0).getEdges();
         vehicles.get(0).getSpeed();
         vehicles.get(0).getAngle();
