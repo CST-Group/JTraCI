@@ -17,6 +17,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.unicamp.jtraci.entities.Junction;
 import br.unicamp.jtraci.entities.Lane;
 import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
@@ -141,6 +142,16 @@ public class JTraciTest {
 
         trafficLights.get(0).setState("rrrrrrrRrr");
         sumoSimulation.nextStep();
+
+    }
+    
+    @Test
+    public void getAllJunctions(){
+
+        List<Junction> junctions = sumoSimulation.getAllJunctions();
+
+        junctions.get(0).getPosition();
+        junctions.get(0).getShape();        
 
     }
 

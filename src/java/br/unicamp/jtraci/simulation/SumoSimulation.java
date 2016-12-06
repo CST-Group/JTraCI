@@ -18,6 +18,7 @@ import java.util.List;
 
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.SumoConnection;
+import br.unicamp.jtraci.entities.Junction;
 import br.unicamp.jtraci.entities.Lane;
 import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
@@ -106,6 +107,13 @@ public class SumoSimulation {
         sumoConnection.sendCommandList(commands);
 
     }
+    
+	public synchronized List<Junction> getAllJunctions() {
+		
+		ReadQuery<Junction> junctionReadQuery = new ReadQuery<Junction>(sumoConnection, Junction.class);
+
+        return junctionReadQuery.getAll();
+	}
 
 
     public synchronized List<Vehicle> getAllVehicles(){
