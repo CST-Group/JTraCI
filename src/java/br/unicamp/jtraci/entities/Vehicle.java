@@ -12,7 +12,6 @@
 package br.unicamp.jtraci.entities;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.unicamp.jtraci.query.ReadQuery;
@@ -33,7 +32,8 @@ public class Vehicle extends Entity {
     /** Returns the ids of the edges the vehicle's route is made of */
     private List<String> edges;
     
-    /** Returns the position(two doubles) of the named vehicle (center of the front bumper) within the last step [m,m]; error value: [-2^30, -2^30]. */
+    /** Returns the position(two doubles) of the named vehicle (center of the front bumper) within the 
+     * last step [m,m]; error value: [-2^30, -2^30]. */
     private Point2D position;
 
     private ReadQuery<Vehicle> vehicleReadQuery;
@@ -81,7 +81,5 @@ public class Vehicle extends Entity {
 		
 		return position;
 	}
-    
-    
-    
+        
 }

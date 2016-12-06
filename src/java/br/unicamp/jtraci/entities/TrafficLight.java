@@ -3,15 +3,15 @@
  */
 package br.unicamp.jtraci.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.query.WriteQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
 import br.unicamp.jtraci.util.IgnoreParameter;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author andre
@@ -22,15 +22,16 @@ public class TrafficLight extends Entity {
 
     private WriteQuery<TrafficLight> trafficLightWriteQuery;
 
-    /** red light -> 'r' */
-    /** red light w/o deceleration -> 'R' */
-    /** yellow light -> 'y' */
-    /** yellow light w/out deceleration -> 'Y' */
-    /** green light -> 'g' */
-    /** green light w/out deceleration -> 'G' */
-    /** light off -> 'O' */
     /**
      * Returns the named tl's state as a tuple of light definitions from rRgGyYoO, for red, green, yellow, off, where lower case letters mean that the stream has to decelerate
+     * 
+     * red light -> 'r'                        
+	 * red light w/o deceleration -> 'R'
+	 * yellow light -> 'y'               
+	 * yellow light w/out deceleration -> 'Y' 
+	 * green light -> 'g'                   
+	 * green light w/out deceleration -> 'G' 
+	 * light off -> 'O'
      */
     private String state;
 

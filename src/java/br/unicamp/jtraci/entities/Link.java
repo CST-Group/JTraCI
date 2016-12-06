@@ -4,8 +4,12 @@ package br.unicamp.jtraci.entities;
  * Created by Du on 07/11/16.
  */
 public class Link extends Entity{
+	
+	
     private final Lane incomingLane;
+    
     private final Lane acrossLane;
+    
     private final Lane outgoingLane;
 
     public Link(Lane incomingLane, Lane acrossLane, Lane outgoingLane) {

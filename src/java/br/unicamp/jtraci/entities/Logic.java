@@ -11,13 +11,15 @@ import java.util.List;
  * 
  * For each Logic, structure is: SubID (type + string ) -  	Type (type + integer ) -  	SubParameter (type + compound) -  	Current phase index (type + integer ) -  	Number of phases (type + integer ) - 	Phase 1 	... 	Phase n .
  *
- * TODO - Create a list of this entity in the TrafficLight.getCompleteDefinition();
+ * A list of this entity is created in the TrafficLight.getCompleteDefinition();
  *
  */
 public class Logic extends Entity {
 	
 	private List<Phase> phases;
+	
 	private int currentPhase;
+	
 	private String subID;
 
 
