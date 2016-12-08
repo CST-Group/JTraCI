@@ -36,11 +36,6 @@ public class Constants {
     /** command: get simulation variable */
     public static final int CMD_GET_SIM_VARIABLE = 0xab;
 
-    /**
-     * command: get junction variable
-     */
-    public static final int CMD_GET_JUNCTION_VARIABLE = 0xa9;
-
     /** command: set vehicle variable */
     public static final int CMD_SET_VEHICLE_VARIABLE = 0xc4;
 
