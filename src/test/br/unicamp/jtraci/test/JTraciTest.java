@@ -11,20 +11,21 @@
 
 package br.unicamp.jtraci.test;
 
+
 import br.unicamp.jtraci.entities.*;
-import br.unicamp.jtraci.simulation.SumoSimulation;
+import java.awt.geom.Point2D;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.List;
+import br.unicamp.jtraci.simulation.SumoSimulation;
 
 public class JTraciTest {
 
     private int port = 4011;
     private static SumoSimulation sumoSimulation;
 
-    private String pathMap = "/Users/du/Repository/maps/twinT/twinT.sumocfg";
-    //private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
+//    private String pathMap = "/Users/du/Repository/maps/twinT/twinT.sumocfg";
+    private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
 
     private static boolean setUpIsDone = false;
 
@@ -65,8 +66,29 @@ public class JTraciTest {
 
         List<Lane> lanes = sumoSimulation.getAllLanes();
 
-        lanes.get(0).getLastStepVehicleIds();
-        lanes.get(0).getShape();
+        Point2D lightPosition = lanes.get(0).getShape().getCurrentPoint();        
+        
+        List<String> vehicleIdList = lanes.get(0).getLastStepVehicleIds();
+        
+        for(String vehicleId: vehicleIdList){
+			
+			Vehicle vehicle = new Vehicle();
+			vehicle.setID(vehicleId);
+			
+			try{
+				
+				Double V = vehicle.getSpeed();
+				Point2D X = vehicle.getPosition();					
+				
+			}catch(Exception e){
+				
+				//if the vehicle does not exist at this point, just do not add any info
+			}
+																							
+		}
+        
+        
+        lanes.get(0).getShape();        
         lanes.get(0).getEdgeId();
         lanes.get(0).getLength();
         lanes.get(0).getVMax();

@@ -12,10 +12,6 @@
 package br.unicamp.jtraci.communication;
 
 
-import br.unicamp.jtraci.entities.Entity;
-import br.unicamp.jtraci.util.Constants;
-import br.unicamp.jtraci.util.IgnoreParameter;
-
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.io.UnsupportedEncodingException;
@@ -24,6 +20,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import br.unicamp.jtraci.entities.Entity;
+import br.unicamp.jtraci.util.Constants;
+import br.unicamp.jtraci.util.IgnoreParameter;
 
 public class CommandResult {
 

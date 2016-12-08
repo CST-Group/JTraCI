@@ -1,11 +1,10 @@
 package br.unicamp.jtraci.entities;
 
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
-
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Junction extends Entity {
     private SumoSimulation sumoSimulation;
 
 
-    public Junction(){
+    public Junction() {
         junctionReadQuery = new ReadQuery<Junction>(SumoSimulation.getInstance().getConnection(), Junction.class);
         sumoSimulation = SumoSimulation.getInstance();
 
@@ -36,31 +35,30 @@ public class Junction extends Entity {
 
     public Point2D getPosition() {
 
-        position = (Point2D)junctionReadQuery.getAttributeValue(Constants.VAR_POSITION, ID, Point2D.class);
+        position = (Point2D) junctionReadQuery.getAttributeValue(Constants.VAR_POSITION, ID, Point2D.class);
 
         return position;
     }
 
     public Path2D getShape() {
 
-        shape = (Path2D)(junctionReadQuery.getAttributeValue(Constants.VAR_SHAPE, ID, Path2D.class));
+        shape = (Path2D) (junctionReadQuery.getAttributeValue(Constants.VAR_SHAPE, ID, Path2D.class));
 
         return shape;
     }
 
-    public List<Edge> getIncommingEdges(){
+    public List<Edge> getIncommingEdges() {
 
         List<Edge> allEdges = getAllEdges();
 
-        if(incommingEdges.size() == 0){
+        if (incommingEdges.size() == 0) {
             incommingEdges = new ArrayList<Edge>();
 
             for (Edge edge : allEdges) {
 
-                String [] edgeSplited = edge.getID().split(":");
+                String[] edgeSplited = edge.getID().split(":");
 
-                if(edgeSplited[1].equals(getID()))
-                {
+                if (edgeSplited[1].equals(getID())) {
                     incommingEdges.add(edge);
                 }
 
@@ -71,19 +69,18 @@ public class Junction extends Entity {
         return incommingEdges;
     }
 
-    public List<Edge> getOutgoingEdges(){
+    public List<Edge> getOutgoingEdges() {
 
         List<Edge> allEdges = getAllEdges();
 
-        if(outgoingLanes.size() == 0){
+        if (outgoingLanes.size() == 0) {
             outgoingLanes = new ArrayList<Edge>();
 
             for (Edge edge : allEdges) {
 
-                String [] edgeSplited = edge.getID().split(":");
+                String[] edgeSplited = edge.getID().split(":");
 
-                if(edgeSplited[0].equals(getID()))
-                {
+                if (edgeSplited[0].equals(getID())) {
                     outgoingLanes.add(edge);
                 }
 
@@ -93,12 +90,11 @@ public class Junction extends Entity {
         return outgoingLanes;
     }
 
-    private List<Edge> getAllEdges(){
-        if(allEdges.size() == 0){
+    private List<Edge> getAllEdges() {
+        if (allEdges.size() == 0) {
             allEdges = sumoSimulation.getAllEdges();
         }
 
         return allEdges;
     }
-
 }

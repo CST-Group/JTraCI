@@ -27,6 +27,8 @@ public class Constants {
     public static final int CMD_GET_VEHICLE_VARIABLE = 0xa4;
 
     public static final int CMD_GET_LANE_VARIABLE = 0xa3;
+    
+    public static final int CMD_GET_JUNCTION_VARIABLE = 0xa9;
 
     /** command: set lane variable */
     public static final int CMD_SET_LANE_VARIABLE = 0xc3;
@@ -162,4 +164,5 @@ public class Constants {
     public static final byte TYPE_COMPOUND = 0x0F;
     /** color (four ubytes) */
     public static final byte TYPE_COLOR = 0x11;
+    
 }

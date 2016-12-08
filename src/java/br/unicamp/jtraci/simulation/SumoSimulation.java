@@ -11,16 +11,15 @@
 
 package br.unicamp.jtraci.simulation;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.SumoConnection;
 import br.unicamp.jtraci.entities.*;
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.util.Constants;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class SumoSimulation {
@@ -104,7 +103,6 @@ public class SumoSimulation {
         sumoConnection.sendCommandList(commands);
 
     }
-
 
     public synchronized List<Vehicle> getAllVehicles(){
 

@@ -3,12 +3,12 @@
  */
 package br.unicamp.jtraci.entities;
 
+import java.awt.geom.Path2D;
+import java.util.List;
+
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
-
-import java.awt.geom.Path2D;
-import java.util.List;
 
 /**
  * @author andre
@@ -155,9 +155,4 @@ public class Lane extends Entity {
 		
 		return shape;
 	}
-
-
-	
-	
-
 }
