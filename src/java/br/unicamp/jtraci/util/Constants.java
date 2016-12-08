@@ -34,8 +34,18 @@ public class Constants {
     /** command: get simulation variable */
     public static final int CMD_GET_SIM_VARIABLE = 0xab;
 
+    /**
+     * command: get junction variable
+     */
+    public static final int CMD_GET_JUNCTION_VARIABLE = 0xa9;
+
     /** command: set vehicle variable */
     public static final int CMD_SET_VEHICLE_VARIABLE = 0xc4;
+
+    /**
+     * command: get edge variable
+     */
+    public static final int CMD_GET_EDGE_VARIABLE = 0xaa;
 
     /** ids of vehicles starting to teleport (get: simulation) */
     public static final int VAR_TELEPORT_STARTING_VEHICLES_IDS = 0x76;
@@ -67,6 +77,8 @@ public class Constants {
 
 	public static final int VAR_TL_CURRENT_PHASE_DURATION = 0x24;
 
+	public static final int VAR_TL_CONTROLLED_LANES = 0x26;
+
     public static final int VAR_TL_CONTROLLED_LINKS = 0x27;
 
     public static final int VAR_TL_COMPLETE_DEFINITION_RYG = 0x2b;
@@ -76,6 +88,26 @@ public class Constants {
 	public static final int VAR_TL_CURRENT_PROGRAM = 0x29;
 
 	public static final int VAR_TL_ASSUMED_TIME_OF_NEXT_SWITCH = 0x2d;
+
+	public static final int VAR_EDGE_CURRENT_TRAVEL_TIME = 0x5a;
+
+	public static final int VAR_EDGE_CO2_EMISSIONS = 0x60;
+
+    public static final int VAR_EDGE_CO_EMISSIONS = 0x61;
+
+    public static final int VAR_EDGE_HC_EMISSIONS = 0x62;
+
+    public static final int VAR_EDGE_PMX_EMISSIONS = 0x63;
+
+    public static final int VAR_EDGE_NOX_EMISSIONS = 0x64;
+
+    public static final int VAR_EDGE_FUEL_CONSUMPTION = 0x65;
+
+    public static final int VAR_EDGE_NOISE_EMISSION = 0x66;
+
+    public static final int VAR_EDGE_ELECTRICITY_CONSUMPTION = 0x71;
+
+    public static final int VAR_EDGE_LAST_STEP_PERSON_IDS = 0x1a;
 
 	public static final int VAR_LANE_EDGE_ID = 0x31;
 
@@ -97,7 +129,7 @@ public class Constants {
 
 	public static final int VAR_LANE_WAITING_TIME = 0x7a;
 
-    public static final int VAR_LANE_SHAPE = 0x4e;
+    public static final int VAR_SHAPE = 0x4e;
 	
 	/** command: close sumo */
 	public static final int CMD_CLOSE = 0x7F;

@@ -13,9 +13,7 @@ package br.unicamp.jtraci.simulation;
 
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.SumoConnection;
-import br.unicamp.jtraci.entities.Lane;
-import br.unicamp.jtraci.entities.TrafficLight;
-import br.unicamp.jtraci.entities.Vehicle;
+import br.unicamp.jtraci.entities.*;
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.util.Constants;
 
@@ -135,6 +133,19 @@ public class SumoSimulation {
         return laneReadQuery.getAll();
 	}
 
+    public synchronized List<Junction> getAllJunctions() {
+
+        ReadQuery<Junction> junctionReadQuery = new ReadQuery<Junction>(sumoConnection, Junction.class);
+
+        return junctionReadQuery.getAll();
+    }
+
+    public synchronized List<Edge> getAllEdges() {
+        ReadQuery<Edge> edgeReadQuery = new ReadQuery<Edge>(sumoConnection, Edge.class);
+
+        return edgeReadQuery.getAll();
+    }
+
 	public void close() {			
 		
 		List<Command> commands = new ArrayList<Command>();
@@ -147,5 +158,6 @@ public class SumoSimulation {
         sumoConnection.close();
         
 	}
-    
+
+
 }

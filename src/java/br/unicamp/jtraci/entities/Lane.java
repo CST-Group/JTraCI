@@ -19,7 +19,7 @@ public class Lane extends Entity {
 	private ReadQuery<Lane> laneReadQuery;
 	
 	/** Returns the id of the edge this lane belongs to */
-	private String edgeId;
+	private Edge edgeId;
 	
 	/** Returns the length of the named lane [m] */
 	private Double length;
@@ -64,9 +64,9 @@ public class Lane extends Entity {
 
 	}
 
-	public String getEdgeId() {
+	public Edge getEdgeId() {
 		
-		edgeId = (String)(laneReadQuery.getAttributeValue(Constants.VAR_LANE_EDGE_ID, ID, String.class));
+		edgeId = new Edge((String)(laneReadQuery.getAttributeValue(Constants.VAR_LANE_EDGE_ID, ID, String.class)));
 		
 		return edgeId;
 		
@@ -151,7 +151,7 @@ public class Lane extends Entity {
 	 */
 	public Path2D getShape() {
 
-        shape = (Path2D)(laneReadQuery.getAttributeValue(Constants.VAR_LANE_SHAPE, ID, Path2D.class));
+        shape = (Path2D)(laneReadQuery.getAttributeValue(Constants.VAR_SHAPE, ID, Path2D.class));
 		
 		return shape;
 	}

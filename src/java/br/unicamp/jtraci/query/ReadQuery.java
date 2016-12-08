@@ -14,10 +14,7 @@ package br.unicamp.jtraci.query;
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.CommandResult;
 import br.unicamp.jtraci.communication.SumoConnection;
-import br.unicamp.jtraci.entities.Entity;
-import br.unicamp.jtraci.entities.Lane;
-import br.unicamp.jtraci.entities.TrafficLight;
-import br.unicamp.jtraci.entities.Vehicle;
+import br.unicamp.jtraci.entities.*;
 import br.unicamp.jtraci.util.Constants;
 
 import java.util.List;
@@ -90,6 +87,15 @@ public class ReadQuery<E extends Entity> {
 		}  else if(this.classE.isAssignableFrom(Lane.class)){
 			
 			command = Constants.CMD_GET_LANE_VARIABLE;
+
+		} else if(this.classE.isAssignableFrom(Junction.class)){
+
+			command = Constants.CMD_GET_JUNCTION_VARIABLE;
+
+		} else if(this.classE.isAssignableFrom(Edge.class)){
+
+			command = Constants.CMD_GET_EDGE_VARIABLE;
+
 		}
 
 		return command;

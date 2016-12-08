@@ -11,9 +11,7 @@
 
 package br.unicamp.jtraci.test;
 
-import br.unicamp.jtraci.entities.Lane;
-import br.unicamp.jtraci.entities.TrafficLight;
-import br.unicamp.jtraci.entities.Vehicle;
+import br.unicamp.jtraci.entities.*;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,6 +77,39 @@ public class JTraciTest {
         lanes.get(0).getlastStepMeanVehicleLength();
         lanes.get(0).getWaitingTime();
 
+    }
+
+    @Test
+    public void getAllEdges(){
+
+        List<Edge> edges = sumoSimulation.getAllEdges();
+        edges.get(0).getCo2Emissions();
+        edges.get(0).getCoEmissions();
+        edges.get(0).getCurrentTravelTime();
+        edges.get(0).getElectricityConsumption();
+        edges.get(0).getFuelConsumption();
+        edges.get(0).getHcEmissions();
+        edges.get(0).getLastStepMeanSpeed();
+        edges.get(0).getLastStepMeanVehicleLength();
+        edges.get(0).getLastStepOccupancy();
+        edges.get(0).getLastStepPersonIds();
+        edges.get(0).getLastStepVehicleIds();
+        edges.get(0).getLastStepVehicleNumber();
+        edges.get(0).getNoiseEmission();
+        edges.get(0).getNoxEmissions();
+        edges.get(0).getPmxEmissions();
+        edges.get(0).getWaitingTime();
+
+    }
+
+    @Test
+    public void getAllJunctions(){
+        List<Junction> junctions = sumoSimulation.getAllJunctions();
+
+        junctions.get(0).getIncommingEdges();
+        junctions.get(0).getOutgoingEdges();
+        junctions.get(0).getPosition();
+        junctions.get(0).getShape();
     }
 
     @Test
