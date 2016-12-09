@@ -137,6 +137,13 @@ public class SumoSimulation {
 
         return junctionReadQuery.getAll();
     }
+    
+	public synchronized List<InductionLoop> getAllInductionLoops() {
+		
+		ReadQuery<InductionLoop> inductionLoopReadQuery = new ReadQuery<InductionLoop>(sumoConnection, InductionLoop.class);
+
+        return inductionLoopReadQuery.getAll();
+	}
 
     public synchronized List<Edge> getAllEdges() {
         ReadQuery<Edge> edgeReadQuery = new ReadQuery<Edge>(sumoConnection, Edge.class);
@@ -156,6 +163,4 @@ public class SumoSimulation {
         sumoConnection.close();
         
 	}
-
-
 }

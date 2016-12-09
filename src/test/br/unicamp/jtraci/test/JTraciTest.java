@@ -133,6 +133,27 @@ public class JTraciTest {
         junctions.get(0).getPosition();
         junctions.get(0).getShape();
     }
+    
+    @Test
+    public void getAllInductionLoops(){
+    	
+        List<InductionLoop> inductionLoops = sumoSimulation.getAllInductionLoops();
+        
+        if(inductionLoops.size()>0){
+        	
+            inductionLoops.get(0).getLaneID();
+            inductionLoops.get(0).getLastStepMeanSpeed();
+            inductionLoops.get(0).getLastStepMeanVehicleLength();
+            inductionLoops.get(0).getLastStepOccupancy() ;
+            inductionLoops.get(0).getLastStepsTimeSinceLastDetection() ;
+            inductionLoops.get(0).getLastStepVehicleIds() ;
+            inductionLoops.get(0).getLastStepsVehicleData() ;
+            inductionLoops.get(0).getLastStepVehicleNumber() ;
+            inductionLoops.get(0).getPosition() ;  
+        	  	
+        }      
+        
+    }
 
     @Test
     public void getAllTrafficLights(){

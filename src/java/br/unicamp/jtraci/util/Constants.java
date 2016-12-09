@@ -29,6 +29,8 @@ public class Constants {
     public static final int CMD_GET_LANE_VARIABLE = 0xa3;
     
     public static final int CMD_GET_JUNCTION_VARIABLE = 0xa9;
+    
+    public static final int CMD_GET_INDUCTION_LOOP_VARIABLE = 0xa0;
 
     /** command: set lane variable */
     public static final int CMD_SET_LANE_VARIABLE = 0xc3;
@@ -123,6 +125,10 @@ public class Constants {
 	public static final int VAR_LANE_LAST_STEP_OCCUPANCY = 0x13;
 
 	public static final int VAR_LANE_LAST_STEP_MEAN_VEHICLE_LENGTH = 0x15;
+	
+	public static final int VAR_LANE_LAST_STEP_TIME_SINCE_LAST_DETECTION = 0x16;
+	
+	public static final int VAR_LAST_STEPS_VEHICLE_DATA = 0x17;   
 
 	public static final int VAR_LANE_WAITING_TIME = 0x7a;
 

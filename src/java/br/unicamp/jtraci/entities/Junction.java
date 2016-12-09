@@ -2,11 +2,12 @@ package br.unicamp.jtraci.entities;
 
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+
 import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by du on 07/12/16.

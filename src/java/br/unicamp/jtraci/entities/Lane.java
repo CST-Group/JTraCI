@@ -109,6 +109,7 @@ public class Lane extends Entity {
 	 * @return the lastStepVehicleIds
 	 */
 	public List<String> getLastStepVehicleIds(){
+		
 		lastStepVehicleIds = (List<String>)(laneReadQuery.getAttributeValue(Constants.VAR_LANE_LAST_STEP_VEHICLE_IDS, ID, List.class));
 
 		return lastStepVehicleIds;

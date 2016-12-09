@@ -96,6 +96,10 @@ public class ReadQuery<E extends Entity> {
 
 			command = Constants.CMD_GET_EDGE_VARIABLE;
 			
+		} else if(this.classE.isAssignableFrom(InductionLoop.class)){
+
+			command = Constants.CMD_GET_INDUCTION_LOOP_VARIABLE;
+			
 		}
 
 		return command;
