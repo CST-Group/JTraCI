@@ -128,8 +128,6 @@ public class JTraciTest {
     public void getAllJunctions(){
         List<Junction> junctions = sumoSimulation.getAllJunctions();
 
-        junctions.get(0).getIncommingEdges();
-        junctions.get(0).getOutgoingEdges();
         junctions.get(0).getPosition();
         junctions.get(0).getShape();
     }
