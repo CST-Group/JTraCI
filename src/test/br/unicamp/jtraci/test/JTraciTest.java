@@ -144,10 +144,10 @@ public class JTraciTest {
             inductionLoops.get(0).getLastStepMeanVehicleLength();
             inductionLoops.get(0).getLastStepOccupancy() ;
             inductionLoops.get(0).getLastStepsTimeSinceLastDetection() ;
-            inductionLoops.get(0).getLastStepVehicleIds() ;
-            inductionLoops.get(0).getLastStepsVehicleData() ;
+            inductionLoops.get(0).getLastStepVehicleIds() ;           
             inductionLoops.get(0).getLastStepVehicleNumber() ;
             inductionLoops.get(0).getPosition() ;  
+            inductionLoops.get(0).getLastStepsVehicleData() ;
         	  	
         }      
         

@@ -5,6 +5,8 @@ package br.unicamp.jtraci.entities;
 
 /**
  * @author andre
+ * 
+ * Filled by InductionLoop.getLastStepVehicleData
  *
  */
 public class VehicleData {
