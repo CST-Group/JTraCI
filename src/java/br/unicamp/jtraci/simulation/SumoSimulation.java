@@ -22,7 +22,7 @@ import br.unicamp.jtraci.query.ReadQuery;
 import br.unicamp.jtraci.util.Constants;
 
 
-public class SumoSimulation {
+public final class SumoSimulation {
 
     private SumoConnection sumoConnection;
     /**
@@ -32,7 +32,7 @@ public class SumoSimulation {
     
     private static SumoSimulation sumoSimulation = null;
 
-    public static SumoSimulation getInstance(){
+    public static synchronized SumoSimulation getInstance(){
 
         if(sumoSimulation ==  null)
             sumoSimulation = new SumoSimulation();
