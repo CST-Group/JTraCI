@@ -84,6 +84,12 @@ public class TrafficLight extends Entity {
         trafficLightWriteQuery.setAttributeValue(Constants.VAR_TL_STATE, ID, Constants.TYPE_STRING, state);
 
     }
+    
+    public void setCurrentPhase(Integer phaseIndex){
+    	
+    	trafficLightWriteQuery.setAttributeValue(Constants.VAR_TL_PHASE_INDEX, ID, Constants.TYPE_INTEGER, phaseIndex);
+    	
+    }
 
     public Integer getCurrentPhaseDuration() {
 

@@ -73,6 +73,8 @@ public class Constants {
     public static final int CMD_SET_TRAFFIC_LIGHT_VARIABLE = 0xc2;
 
 	public static final int VAR_TL_STATE = 0x20;
+	
+	public static final int VAR_TL_PHASE_INDEX = 0x22;
 
 	public static final int VAR_TL_CURRENT_PHASE_DURATION = 0x24;
 
@@ -165,5 +167,6 @@ public class Constants {
     public static final byte TYPE_COMPOUND = 0x0F;
     /** color (four ubytes) */
     public static final byte TYPE_COLOR = 0x11;
+
     
 }
