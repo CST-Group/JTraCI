@@ -19,6 +19,9 @@ import br.unicamp.jtraci.simulation.SumoSimulation;
 import br.unicamp.jtraci.util.Constants;
 
 public class Vehicle extends Entity {
+	
+	/** Returns a list of ids of all vehicles currently running within the scenario (the given vehicle ID is ignored)  */
+	private List<String> allVehicles;
 
     /** Returns the speed of the named vehicle within the last step [m/s]; error value: -1001 */
     private double speed;
@@ -81,5 +84,17 @@ public class Vehicle extends Entity {
 		
 		return position;
 	}
+
+	/**
+	 * @return the allVehicles
+	 */
+	public List<String> getAllVehicles() {
+		
+		allVehicles = (List<String>)(vehicleReadQuery.getAttributeValue(Constants.ID_LIST, ID, List.class));
+		
+		return allVehicles;
+	}
+	
+	
         
 }
