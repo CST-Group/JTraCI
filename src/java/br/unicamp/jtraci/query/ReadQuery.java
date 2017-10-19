@@ -16,7 +16,14 @@ import java.util.List;
 import br.unicamp.jtraci.communication.Command;
 import br.unicamp.jtraci.communication.CommandResult;
 import br.unicamp.jtraci.communication.SumoConnection;
-import br.unicamp.jtraci.entities.*;
+import br.unicamp.jtraci.entities.Edge;
+import br.unicamp.jtraci.entities.Entity;
+import br.unicamp.jtraci.entities.InductionLoop;
+import br.unicamp.jtraci.entities.Junction;
+import br.unicamp.jtraci.entities.Lane;
+import br.unicamp.jtraci.entities.Simulation;
+import br.unicamp.jtraci.entities.TrafficLight;
+import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.util.Constants;
 
 public class ReadQuery<E extends Entity> {
@@ -99,6 +106,10 @@ public class ReadQuery<E extends Entity> {
 		} else if(this.classE.isAssignableFrom(InductionLoop.class)){
 
 			command = Constants.CMD_GET_INDUCTION_LOOP_VARIABLE;
+			
+		} else if(this.classE.isAssignableFrom(Simulation.class)){
+
+			command = Constants.CMD_GET_SIM_VARIABLE;
 			
 		}
 

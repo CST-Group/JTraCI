@@ -135,6 +135,8 @@ public class Constants {
 	public static final int VAR_LANE_WAITING_TIME = 0x7a;
 
     public static final int VAR_SHAPE = 0x4e;
+    
+	public static final int VAR_MIN_EXPECTED_CARS_TO_LEAVE = 0x7d;
 	
 	/** command: close sumo */
 	public static final int CMD_CLOSE = 0x7F;
