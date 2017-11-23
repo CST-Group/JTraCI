@@ -14,6 +14,7 @@ package br.unicamp.jtraci.test;
 
 import br.unicamp.jtraci.entities.*;
 import java.awt.geom.Point2D;
+import java.net.InetAddress;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,11 +22,11 @@ import br.unicamp.jtraci.simulation.SumoSimulation;
 
 public class JTraciTest {
 
-    private int port = 4011;
+    private int port = 4044;
     private static SumoSimulation sumoSimulation;
 
-//    private String pathMap = "/Users/du/Repository/maps/twinT/twinT.sumocfg";
-    private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
+    private String pathMap = "/Users/du/Repository/maps/twinT/twinT.sumocfg";
+    //private String pathMap = "/home/andre/Unicamp/Pos Doc/Projetos/CMwCA/d4/sumoExamples/twinT/twinT.sumocfg";
 
     private static boolean setUpIsDone = false;
 
@@ -38,7 +39,11 @@ public class JTraciTest {
         }
 
         sumoSimulation = SumoSimulation.getInstance();
-        sumoSimulation.runSumoGui(pathMap, port);
+        try {
+            sumoSimulation.connect(InetAddress.getByName("127.0.0.1"), port);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < 172; i++)
             sumoSimulation.nextStep();
@@ -53,11 +58,13 @@ public class JTraciTest {
 
         List<Vehicle> vehicles = sumoSimulation.getAllVehicles();
 
-        vehicles.get(0).getPosition();
-        vehicles.get(0).getEdges();
-        vehicles.get(0).getSpeed();
-        vehicles.get(0).getAngle();
-        vehicles.get(0).getLaneID();
+        for (Vehicle vehicle: vehicles) {
+            vehicle.getPosition();
+            vehicle.getEdges();
+            vehicle.getSpeed();
+            vehicle.getAngle();
+            vehicle.getLaneID();
+        }
 
     }
 
@@ -105,31 +112,36 @@ public class JTraciTest {
     public void getAllEdges(){
 
         List<Edge> edges = sumoSimulation.getAllEdges();
-        edges.get(0).getCo2Emissions();
-        edges.get(0).getCoEmissions();
-        edges.get(0).getCurrentTravelTime();
-        edges.get(0).getElectricityConsumption();
-        edges.get(0).getFuelConsumption();
-        edges.get(0).getHcEmissions();
-        edges.get(0).getLastStepMeanSpeed();
-        edges.get(0).getLastStepMeanVehicleLength();
-        edges.get(0).getLastStepOccupancy();
-        edges.get(0).getLastStepPersonIds();
-        edges.get(0).getLastStepVehicleIds();
-        edges.get(0).getLastStepVehicleNumber();
-        edges.get(0).getNoiseEmission();
-        edges.get(0).getNoxEmissions();
-        edges.get(0).getPmxEmissions();
-        edges.get(0).getWaitingTime();
 
+        for (Edge edge: edges) {
+            edge.getCo2Emissions();
+            edge.getCoEmissions();
+            edge.getCurrentTravelTime();
+            edge.getElectricityConsumption();
+            edge.getFuelConsumption();
+            edge.getHcEmissions();
+            edge.getLastStepMeanSpeed();
+            edge.getLastStepMeanVehicleLength();
+            edge.getLastStepOccupancy();
+            edge.getLastStepPersonIds();
+            edge.getLastStepVehicleIds();
+            edge.getLastStepVehicleNumber();
+            edge.getNoiseEmission();
+            edge.getNoxEmissions();
+            edge.getPmxEmissions();
+            edge.getWaitingTime();
+        }
     }
 
     @Test
     public void getAllJunctions(){
         List<Junction> junctions = sumoSimulation.getAllJunctions();
 
-        junctions.get(0).getPosition();
-        junctions.get(0).getShape();
+        for (Junction junction: junctions) {
+            junction.getPosition();
+            junction.getShape();
+        }
+
     }
     
     @Test
@@ -148,6 +160,7 @@ public class JTraciTest {
             inductionLoops.get(0).getLastStepVehicleNumber() ;
             inductionLoops.get(0).getPosition() ;  
             inductionLoops.get(0).getLastStepsVehicleData() ;
+            inductionLoops.get(0).getLane();
         	  	
         }      
         
@@ -158,13 +171,15 @@ public class JTraciTest {
 
         List<TrafficLight> trafficLights = sumoSimulation.getAllTrafficLights();
 
-        trafficLights.get(0).getState();
-        trafficLights.get(0).getCurrentPhaseDuration();
-        trafficLights.get(0).getCurrentPhase();
-        trafficLights.get(0).getCurrentProgram();
-        trafficLights.get(0).getAssumedTimeOfNextSwitch();
-        trafficLights.get(0).getCompleteDefinition();
-        trafficLights.get(0).getControlledLinks();
+        for (TrafficLight trafficLight: trafficLights) {
+            trafficLight.getState();
+            trafficLight.getCurrentPhaseDuration();
+            trafficLight.getCurrentPhase();
+            trafficLight.getCurrentProgram();
+            trafficLight.getAssumedTimeOfNextSwitch();
+            trafficLight.getCompleteDefinition();
+            trafficLight.getControlledLinks();
+        }
 
     }
 
