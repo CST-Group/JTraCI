@@ -71,6 +71,18 @@ public class TrafficLight extends Entity {
 
     }
 
+    public void updateEntityState(){
+        getState();
+        getCurrentPhaseDuration();
+        getCurrentPhase();
+        getCurrentProgram();
+        getAssumedTimeOfNextSwitch();
+        getCompleteDefinition();
+        getControlledLinks();
+    }
+
+
+
     public String getState() {
 
         state = (String) (trafficLightReadQuery.getAttributeValue(Constants.VAR_TL_STATE, ID, String.class));

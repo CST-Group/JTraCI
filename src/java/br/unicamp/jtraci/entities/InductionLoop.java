@@ -68,6 +68,17 @@ public class InductionLoop extends Entity {
     	
     }
 
+    public void updateEntityState(){
+		getPosition();
+		getLaneID();
+		getLastStepVehicleNumber();
+		getLastStepMeanSpeed();
+		getLastStepVehicleIds();
+		getLastStepOccupancy();
+		getLastStepMeanVehicleLength();
+		getLastStepsTimeSinceLastDetection();
+	}
+
 	/**
 	 * @return the position
 	 */
