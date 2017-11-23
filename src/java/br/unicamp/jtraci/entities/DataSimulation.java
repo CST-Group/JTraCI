@@ -19,15 +19,15 @@ import br.unicamp.jtraci.util.Constants;
  * @author andre
  *
  */
-public class Simulation extends Entity {
+public class DataSimulation extends Entity {
 	
 	/** The number of vehicles which are in the net plus the ones still waiting to start. This number may be smaller than the actual number of vehicles still to come because of delayed route file parsing. */
 	private int minVehicleNumberExpectedToLeave;
 	
-	private ReadQuery<Simulation> simulationReadQuery;
+	private ReadQuery<DataSimulation> simulationReadQuery;
 	
-	public Simulation(){
-		simulationReadQuery = new ReadQuery<Simulation>(SumoSimulation.getInstance().getConnection(), Simulation.class);
+	public DataSimulation(){
+		simulationReadQuery = new ReadQuery<DataSimulation>(SumoSimulation.getInstance().getConnection(), DataSimulation.class);
     }
 	
 	public int getMinExpectedNumber(){

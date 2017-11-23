@@ -104,6 +104,15 @@ public final class SumoSimulation {
 
     }
 
+    public int getMinExpectedNumber(String simulationID){
+
+        DataSimulation dataSimulation = new DataSimulation();
+        dataSimulation.setID(simulationID);
+
+        return dataSimulation.getMinExpectedNumber();
+
+    }
+
     public synchronized List<Vehicle> getAllVehicles(){
 
         ReadQuery<Vehicle> vehicleReadQuery = new ReadQuery<Vehicle>(sumoConnection, Vehicle.class);

@@ -21,7 +21,7 @@ import br.unicamp.jtraci.entities.Entity;
 import br.unicamp.jtraci.entities.InductionLoop;
 import br.unicamp.jtraci.entities.Junction;
 import br.unicamp.jtraci.entities.Lane;
-import br.unicamp.jtraci.entities.Simulation;
+import br.unicamp.jtraci.entities.DataSimulation;
 import br.unicamp.jtraci.entities.TrafficLight;
 import br.unicamp.jtraci.entities.Vehicle;
 import br.unicamp.jtraci.util.Constants;
@@ -107,7 +107,7 @@ public class ReadQuery<E extends Entity> {
 
 			command = Constants.CMD_GET_INDUCTION_LOOP_VARIABLE;
 			
-		} else if(this.classE.isAssignableFrom(Simulation.class)){
+		} else if(this.classE.isAssignableFrom(DataSimulation.class)){
 
 			command = Constants.CMD_GET_SIM_VARIABLE;
 			
