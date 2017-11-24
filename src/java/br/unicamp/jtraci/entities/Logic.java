@@ -60,4 +60,9 @@ public class Logic extends Entity {
 	public void setSubID(String subID) {
 		this.subID = subID;
 	}
+        
+        public String toString() {
+            String s = Integer.toString(currentPhase);
+            return(s);
+        }
 }
