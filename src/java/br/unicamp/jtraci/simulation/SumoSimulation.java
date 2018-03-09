@@ -16,6 +16,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import br.unicamp.jtraci.communication.Command;
+import br.unicamp.jtraci.communication.CommandResult;
 import br.unicamp.jtraci.communication.SumoConnection;
 import br.unicamp.jtraci.entities.*;
 import br.unicamp.jtraci.query.ReadQuery;
@@ -101,6 +102,27 @@ public final class SumoSimulation {
         commands.add(command0);
 
         sumoConnection.sendCommandList(commands);
+
+    }
+
+    public void nextStep(int rate) {
+
+        List<Command> commands = new ArrayList<Command>();
+
+        Command command0 = new Command(Constants.CMD_SIMSTEP2);
+        command0.addContent(((++currentStep) * rate));
+        commands.add(command0);
+
+        sumoConnection.sendCommandList(commands);
+
+    }
+
+    public int getCurrentTime(String simulationID){
+
+        DataSimulation dataSimulation = new DataSimulation();
+        dataSimulation.setID(simulationID);
+
+        return dataSimulation.getCurrentTime();
 
     }
 
