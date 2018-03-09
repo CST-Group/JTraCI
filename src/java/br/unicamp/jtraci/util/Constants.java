@@ -20,6 +20,8 @@ public class Constants {
     /** command: simulation step */
     public static final int CMD_SIMSTEP2 = 0x02;
 
+    public static final int CMD_GET_CURRENT_TIME = 0x70;
+
     /** command: stop node */
     public static final int CMD_STOP = 0x12;
 

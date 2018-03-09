@@ -23,6 +23,8 @@ public class DataSimulation extends Entity {
 	
 	/** The number of vehicles which are in the net plus the ones still waiting to start. This number may be smaller than the actual number of vehicles still to come because of delayed route file parsing. */
 	private int minVehicleNumberExpectedToLeave;
+
+	private int currentTime;
 	
 	private ReadQuery<DataSimulation> simulationReadQuery;
 	
@@ -36,6 +38,15 @@ public class DataSimulation extends Entity {
 
         return minVehicleNumberExpectedToLeave;
 		
+	}
+
+
+	public int getCurrentTime(){
+
+		currentTime  = (Integer)(simulationReadQuery.getAttributeValue(Constants.CMD_GET_CURRENT_TIME, ID, Integer.class));
+
+		return currentTime;
+
 	}
 	
 

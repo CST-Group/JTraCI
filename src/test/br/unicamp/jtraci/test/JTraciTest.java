@@ -45,7 +45,7 @@ public class JTraciTest {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < 172; i++)
+        for (int i = 0; i < 170; i++)
             sumoSimulation.nextStep();
 
 
@@ -205,6 +205,36 @@ public class JTraciTest {
 
         trafficLights.get(0).setState("rrrrrrrRrr");
         sumoSimulation.nextStep();
+
+    }
+
+
+    @Test
+    public void nextStepTest(){
+        sumoSimulation.nextStep(1);
+        sumoSimulation.nextStep(10);
+        sumoSimulation.nextStep(100);
+        sumoSimulation.nextStep(1000);
+        sumoSimulation.nextStep(10000);
+    }
+
+
+    @Test
+    public void getCurrentTime(){
+
+        int initialCurrentTime = sumoSimulation.getCurrentTime("0");
+
+
+        sumoSimulation.nextStep();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        int finalCurrentTime = sumoSimulation.getCurrentTime("0");
+
 
     }
 
